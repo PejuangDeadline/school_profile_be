@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Http\Controllers;
+use App\Models\Rule;
+
+use Illuminate\Http\Request;
+
+class RulesController extends Controller
+{
+    public function index()
+    {
+        $rules = Rule::get();
+        return view('rules.index',compact('rules'));
+    }
+
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'rule_name' => 'required',
+            'rule_value' => 'required',
+        ]);
+
+        $addrule=Rule::create([
+            'rule_name' => $request->rule_name,
+            'rule_value' => $request->rule_value,
+        ]);
+        if ($addrule) {
+            return redirect('/rule')->with('status','Success Add Rule');
+        }else{
+            return redirect('/rule')->with('status','Failed Add Rule');
+        }
+    }
+
+    public function delete($id)
+    {
+        $deleterule=Rule::where('id',$id)
+        ->delete();
+        if ($deleterule) {
+            return redirect('/rule')->with('status','Success Delete Rule');
+        }else{
+            return redirect('/rule')->with('status','Failed Delete Rule');
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'rule_name' => 'required',
+            'rule_value' => 'required',
+        ]);
+
+        $updaterule=Rule::where('id',$id)
+        ->update([
+            'rule_name' => $request->rule_name,
+            'rule_value' => $request->rule_value,
+        ]);
+        if ($updaterule) {
+            return redirect('/rule')->with('status','Success Update Rule');
+        }else{
+            return redirect('/rule')->with('status','Failed Update Rule');
+        }
+    }
+
+}
