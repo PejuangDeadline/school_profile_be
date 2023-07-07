@@ -50,16 +50,32 @@ class RulesController extends Controller
             'rule_value' => 'required',
         ]);
 
-        $updaterule=Rule::where('id',$id)
-        ->update([
-            'rule_name' => $request->rule_name,
-            'rule_value' => $request->rule_value,
-        ]);
-        if ($updaterule) {
-            return redirect('/rule')->with('status','Success Update Rule');
-        }else{
-            return redirect('/rule')->with('status','Failed Update Rule');
-        }
+        //Validate Input
+        $validateInput =  Rule::where('id',$id)->first();
+        $validateInput->rule_name = $request->rule_name;
+        $validateInput->rule_value = $request->rule_value;
+
+       if($validateInput->isDirty()){
+       
+          try {
+            $updaterule=Rule::where('id',$id)
+            ->update([
+                'rule_name' => $request->rule_name,
+                'rule_value' => $request->rule_value,
+            ]);
+            if ($updaterule) {
+                return redirect('/rule')->with('status','Success Update Rule');
+            }else{
+                return redirect('/rule')->with('failed','Failed Update Rule');
+            }
+          } catch (\Throwable $th) {
+           return redirect('/rule')->with('failed','Failed Update Dropdown');
+          }
+
+      } else{
+       return redirect('/rule')->with('failed','There is no Change in Allowance Data');
+      }
+         
     }
 
 }

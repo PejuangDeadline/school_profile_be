@@ -52,16 +52,32 @@ class DropdownController extends Controller
             'code_format' => 'required',
         ]);
 
-        $updaterule=Dropdown::where('id',$id)
-        ->update([
-            'category' => $request->category,
-            'name_value' => $request->name_value,
-            'code_format' => $request->code_format,
-        ]);
-        if ($updaterule) {
-            return redirect('dropdown')->with('status','Success Update Dropdown');
-        }else{
-            return redirect('dropdown')->with('status','Failed Update Dropdown');
-        }
+         //Validate Input
+         $validateInput =  Dropdown::where('id',$id)->first();
+         $validateInput->category = $request->category;
+         $validateInput->name_value = $request->name_value;
+         $validateInput->code_format = $request->code_format;
+
+        if($validateInput->isDirty()){
+        
+           try {
+                $updaterule=Dropdown::where('id',$id)
+                ->update([
+                    'category' => $request->category,
+                    'name_value' => $request->name_value,
+                    'code_format' => $request->code_format,
+                ]);
+                if ($updaterule) {
+                    return redirect('dropdown')->with('status','Success Update Dropdown');
+                }else{
+                    return redirect('dropdown')->with('failed','Failed Update Dropdown');
+                }
+           } catch (\Throwable $th) {
+            return redirect('dropdown')->with('failed','Failed Update Dropdown');
+           }
+
+       } else{
+        return redirect('dropdown')->with('failed','There is no Change in Allowance Data');
+       }
     }
 }
