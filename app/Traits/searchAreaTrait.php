@@ -19,7 +19,7 @@ trait searchAreaTrait
        ]);
 
        $data=$getSearchProvince['data'][0];
-
+       //dd($data);
        return $data['nama'];
     }
 

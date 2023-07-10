@@ -84,13 +84,67 @@ class InstitutionController extends Controller
     public function createProfile($id_inst){
         $id_inst = decrypt($id_inst);
 
-        return view('institutions.create_profile',compact('id_inst'));
+        //API Regional
+        $ruleAuthRegional = Rule::where('rule_name', 'API Auth Regional')->first();
+        $url_AuthRegional = $ruleAuthRegional->rule_value;
+
+        $ruleEmailRegional = Rule::where('rule_name', 'Email Auth Regional')->first();
+        $emailRegional = $ruleEmailRegional->rule_value;
+
+        $rulePasswordRegional = Rule::where('rule_name', 'Password Auth Regional')->first();
+        $passwordRegional = $rulePasswordRegional->rule_value;
+
+        $response = Http::post($url_AuthRegional, [
+            'email' => $emailRegional,
+            'password' => $passwordRegional,
+        ]);
+
+        $data = $response['data'];
+        $token = $data['token'];
+
+        //get list province
+        $ruleApiProvince = Rule::where('rule_name', 'API List Province')->first();
+        $url_ApiProvince = $ruleApiProvince->rule_value;
+
+        $getProvince = Http::withToken($token)
+            ->get($url_ApiProvince);
+        $provinces = $getProvince['data'];
+        //End API Regional[[]]
+
+        return view('institutions.create_profile',compact('id_inst','provinces'));
     }
 
     public function editProfile($id_profile){
         $id_profile = decrypt($id_profile);
 
         $profile = InstitutionProfile::where('id',$id_profile)->first();
+
+        //API Regional
+        $ruleAuthRegional = Rule::where('rule_name', 'API Auth Regional')->first();
+        $url_AuthRegional = $ruleAuthRegional->rule_value;
+
+        $ruleEmailRegional = Rule::where('rule_name', 'Email Auth Regional')->first();
+        $emailRegional = $ruleEmailRegional->rule_value;
+
+        $rulePasswordRegional = Rule::where('rule_name', 'Password Auth Regional')->first();
+        $passwordRegional = $rulePasswordRegional->rule_value;
+
+        $response = Http::post($url_AuthRegional, [
+            'email' => $emailRegional,
+            'password' => $passwordRegional,
+        ]);
+
+        $data = $response['data'];
+        $token = $data['token'];
+
+        //get list province
+        $ruleApiProvince = Rule::where('rule_name', 'API List Province')->first();
+        $url_ApiProvince = $ruleApiProvince->rule_value;
+
+        $getProvince = Http::withToken($token)
+            ->get($url_ApiProvince);
+        $provinces = $getProvince['data'];
+        //End API Regional[[]]
 
         return view('institutions.edit_profile',compact('profile','id_profile'));
     }
@@ -105,14 +159,60 @@ class InstitutionController extends Controller
             'mission' => 'required',
         ]);
 
+        //get Token Area
+        $rule = Rule::where('rule_name', 'API Auth Regional')->first();
+        $url_getToken = $rule->rule_value;
+
+        $ruleAuthUsers = Rule::where('rule_name', 'Email Auth Regional')->first();
+        $authUsername = $ruleAuthUsers->rule_value;
+
+        $ruleAuthPass = Rule::where('rule_name', 'Password Auth Regional')->first();
+        $authPassword = $ruleAuthPass->rule_value;
+
+        $response = Http::post($url_getToken, [
+            'email' => $authUsername,
+            'password' => $authPassword,
+        ]);
+
+        $data = $response['data'];
+        $token = $data['token'];
+
         DB::beginTransaction();
 
         try {
+
+            //Area Province by ID
+            $province_name = $this->provinceName($token, $request->province_by_id);
+            //Area City by ID
+            $city_name = $this->cityName($token, $request->city);
+            //Area District by ID
+            $district_name = $this->districtName($token, $request->district);
+            //Area Subdistrict by ID
+            $subdistrict_name = $this->subdistrictName($token, $request->subdistrict);
+
             $query = InstitutionProfile::create([
-                'id_institution' => $request->$request->id_inst,
+                'id_institution' => $request->id_inst,
                 'about' => $request->about,
                 'vision' => $request->vision,
                 'mission' => $request->mission,
+                'lat' => $request->latitude,
+                'long' => $request->longitude,
+                'addr' => $request->addr,
+                'province' => $province_name,
+                'city' => $city_name,
+                'district' => $district_name,
+                'sub_district' => $subdistrict_name,
+                'zip_code' => $request->zip_code,
+                'phone1' => $request->phone1,
+                'phone2' => $request->phone2,
+                'whatsapp' => $request->whatsapp,
+                'instagram' => $request->instagram,
+                'facebook' => $request->facebook,
+                'twitter' => $request->twitter,
+                'pic' => $request->pic,
+                'pic_no' => $request->pic_no,
+                'owner' => $request->owner,
+                'established' => $request->established
             ]);
 
             DB::commit();
@@ -120,6 +220,7 @@ class InstitutionController extends Controller
 
             return redirect('/institution')->with('status','Success Add Institution Profile');
         } catch (\Exception $e) {
+            //dd($e);
             DB::rollback();
             // something went wrong
 
@@ -146,7 +247,7 @@ class InstitutionController extends Controller
                     'vision' => $request->vision,
                     'mission' => $request->mission,
                 ]);
-            
+
             DB::commit();
             // all good
 
@@ -185,7 +286,7 @@ class InstitutionController extends Controller
 
         $data = $response['data'];
         $token = $data['token'];
-        
+
         DB::beginTransaction();
         try {
             //Area name by ID
