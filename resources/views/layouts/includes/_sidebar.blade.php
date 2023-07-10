@@ -2,8 +2,22 @@
     <nav class="sidenav shadow-right sidenav-light">
         <div class="sidenav-menu">
             <div class="nav accordion" id="accordionSidenav">
-                 <!-- Sidenav Accordion (Utilities)-->
-                 <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseUtilities" aria-expanded="false" aria-controls="collapseUtilities">
+                <!-- Sidenav Menu Heading (Core)-->
+                <div class="sidenav-menu-heading">Core</div>
+                <!-- Sidenav Link (Charts)-->
+                <a class="nav-link" href="{{url('/home')}}">
+                    <div class="nav-link-icon"><i data-feather="home"></i></div>
+                    Home
+                </a>
+                <a class="nav-link" href="{{url('/institution')}}">
+                    <div class="nav-link-icon"><i class="fas fa-school"></i></div>
+                    Institution
+                </a>
+
+                <!-- Sidenav Menu Heading (Core)-->
+                <div class="sidenav-menu-heading">Configuration</div>
+                <!-- Sidenav Accordion (Utilities)-->
+                <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseUtilities" aria-expanded="false" aria-controls="collapseUtilities">
                     <div class="nav-link-icon"><i data-feather="tool"></i></div>
                     Master Configuration
                     <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -21,7 +35,7 @@
         <div class="sidenav-footer">
             <div class="sidenav-footer-content">
                 <div class="sidenav-footer-subtitle">Logged in as:</div>
-                <div class="sidenav-footer-title">Valerie Luna</div>
+                <div class="sidenav-footer-title">{{ auth()->user()->name }}</div>
             </div>
         </div>
     </nav>

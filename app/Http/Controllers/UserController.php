@@ -28,10 +28,11 @@ class UserController extends Controller
             'password' => 'required',
         ]);
 
-        $password = encrypt($request->password);
+        $password = bcrypt($request->password);
 
         $addUser=User::create([
-            'id_partner' => '0',
+            'id_branch' => '0',
+            'id_type' => '0',
             'name' => $request->name,
             'email' => $request->email,
             'password' => $password,
@@ -43,7 +44,7 @@ class UserController extends Controller
         if ($addUser) {
             return redirect('/user')->with('status','Success Add Rule');
         }else{
-            return redirect('/user')->with('status','Failed Add Rule');
+            return redirect('/user')->with('failed','Failed Add Rule');
         }
     }
 
