@@ -146,7 +146,7 @@ class InstitutionController extends Controller
         $provinces = $getProvince['data'];
         //End API Regional[[]]
 
-        return view('institutions.edit_profile',compact('profile','id_profile'));
+        return view('institutions.edit_profile',compact('profile','id_profile','provinces'));
     }
 
     public function storeProfile(Request $request){
@@ -177,6 +177,9 @@ class InstitutionController extends Controller
         $data = $response['data'];
         $token = $data['token'];
 
+        // create by email
+        $created_by=auth()->user()->email;
+
         DB::beginTransaction();
 
         try {
@@ -195,8 +198,8 @@ class InstitutionController extends Controller
                 'about' => $request->about,
                 'vision' => $request->vision,
                 'mission' => $request->mission,
-                'lat' => $request->latitude,
-                'long' => $request->longitude,
+                'lat' => $request->lat,
+                'long' => $request->long,
                 'addr' => $request->addr,
                 'province' => $province_name,
                 'city' => $city_name,
@@ -212,7 +215,8 @@ class InstitutionController extends Controller
                 'pic' => $request->pic,
                 'pic_no' => $request->pic_no,
                 'owner' => $request->owner,
-                'established' => $request->established
+                'established' => $request->established,
+                'created_by' => $created_by,
             ]);
 
             DB::commit();
@@ -238,21 +242,113 @@ class InstitutionController extends Controller
             'mission' => 'required',
         ]);
 
+        $id_profile = $request->id_profile;
+        $profile = InstitutionProfile::where('id',$id_profile)->first();
+
+        //get id if update regional
+        $province_id = $request->province_by_id;
+        $city_id = $request->city;
+        $district_id = $request->district;
+        $subdistrict_id = $request->subdistrict;
+
+        //get Token Area
+        $rule = Rule::where('rule_name', 'API Auth Regional')->first();
+        $url_getToken = $rule->rule_value;
+
+        $ruleAuthUsers = Rule::where('rule_name', 'Email Auth Regional')->first();
+        $authUsername = $ruleAuthUsers->rule_value;
+
+        $ruleAuthPass = Rule::where('rule_name', 'Password Auth Regional')->first();
+        $authPassword = $ruleAuthPass->rule_value;
+
+        $response = Http::post($url_getToken, [
+            'email' => $authUsername,
+            'password' => $authPassword,
+        ]);
+
+        $data = $response['data'];
+        $token = $data['token'];
+
+        //Area Province by ID
+        $province_name = $this->provinceName($token, $request->province_by_id);
+
+        // compare data with database
+        $profile->province = $province_name;
+        $profile->city = $city_id;
+        $profile->district = $district_id;
+        $profile->sub_district = $subdistrict_id;
+
         DB::beginTransaction();
 
         try {
-            $query =  InstitutionProfile:: where('id',$request->id_profile)
-                ->update([
-                    'about' => $request->about,
-                    'vision' => $request->vision,
-                    'mission' => $request->mission,
-                ]);
+            if($profile->isDirty())
+            {
+                //dd('berubah');
+                //Area Province by ID
+                $province_name = $this->provinceName($token, $province_id);
+                //Area City by ID
+                $city_name = $this->cityName($token, $city_id);
+                //Area District by ID
+                $district_name = $this->districtName($token, $district_id);
+                //Area Subdistrict by ID
+                $subdistrict_name = $this->subdistrictName($token, $subdistrict_id);
+
+                $query =  InstitutionProfile:: where('id',$request->id_profile)
+                    ->update([
+                        'about' => $request->about,
+                        'vision' => $request->vision,
+                        'mission' => $request->mission,
+                        'lat' => $request->lat,
+                        'long' => $request->long,
+                        'addr' => $request->addr,
+                        'province' => $province_name,
+                        'city' => $city_name,
+                        'district' => $district_name,
+                        'sub_district' => $subdistrict_name,
+                        'zip_code' => $request->zip_code,
+                        'phone1' => $request->phone1,
+                        'phone2' => $request->phone2,
+                        'whatsapp' => $request->whatsapp,
+                        'instagram' => $request->instagram,
+                        'facebook' => $request->facebook,
+                        'twitter' => $request->twitter,
+                        'pic' => $request->pic,
+                        'pic_no' => $request->pic_no,
+                        'owner' => $request->owner,
+                        'established' => $request->established
+                    ]);
+            }
+            else
+            {
+                //dd('tidak berubah');
+                $query =  InstitutionProfile:: where('id',$request->id_profile)
+                    ->update([
+                        'about' => $request->about,
+                        'vision' => $request->vision,
+                        'mission' => $request->mission,
+                        'lat' => $request->lat,
+                        'long' => $request->long,
+                        'addr' => $request->addr,
+                        'zip_code' => $request->zip_code,
+                        'phone1' => $request->phone1,
+                        'phone2' => $request->phone2,
+                        'whatsapp' => $request->whatsapp,
+                        'instagram' => $request->instagram,
+                        'facebook' => $request->facebook,
+                        'twitter' => $request->twitter,
+                        'pic' => $request->pic,
+                        'pic_no' => $request->pic_no,
+                        'owner' => $request->owner,
+                        'established' => $request->established
+                    ]);
+            }
 
             DB::commit();
             // all good
 
             return redirect('/institution')->with('status','Success Update Institution Profile');
         } catch (\Exception $e) {
+            //dd($e);
             DB::rollback();
             // something went wrong
 
@@ -287,10 +383,19 @@ class InstitutionController extends Controller
         $data = $response['data'];
         $token = $data['token'];
 
+        // create by email
+        $created_by=auth()->user()->email;
+
         DB::beginTransaction();
         try {
             //Area name by ID
             $province_name = $this->provinceName($token, $request->province_by_id);
+            //Area City by ID
+            $city_name = $this->cityName($token, $request->city);
+            //Area District by ID
+            $district_name = $this->districtName($token, $request->district);
+            //Area Subdistrict by ID
+            $subdistrict_name = $this->subdistrictName($token, $request->subdistrict);
 
             //check grade already
             $checkGrade = Branch::where('id_institution',$request->id_inst)
@@ -307,7 +412,29 @@ class InstitutionController extends Controller
                 'id_institution' => $request->id_inst,
                 'grade' => $request->grade,
                 'name' => $request->name_branch,
+                'about' => $request->about,
+                'vision' => $request->vision,
+                'mission' => $request->mission,
+                'lat' => $request->lat,
+                'long' => $request->long,
+                'addr' => $request->addr,
                 'province' => $province_name,
+                'city' => $city_name,
+                'district' => $district_name,
+                'sub_district' => $subdistrict_name,
+                'zip_code' => $request->zip_code,
+                'phone1' => $request->phone1,
+                'phone2' => $request->phone2,
+                'whatsapp' => $request->whatsapp,
+                'instagram' => $request->instagram,
+                'facebook' => $request->facebook,
+                'twitter' => $request->twitter,
+                'pic' => $request->pic,
+                'pic_no' => $request->pic_no,
+                'owner' => $request->owner,
+                'established' => $request->established,
+                'created_by' => $created_by,
+                'is_active' => '1'
             ]);
 
             DB::commit();

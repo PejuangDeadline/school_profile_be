@@ -84,19 +84,19 @@
                             </div>
                             <div class="mb-3">
                                 <label><b>Vision</b></label>
-                                <input class="form-control" id="id_inst" name="vision" type="text" placeholder=""/>
+                                <input class="form-control" id="vision" name="vision" type="text" placeholder=""/>
                             </div>
                             <div class="mb-3">
                                 <label><b>Mission</b></label>
-                                <input class="form-control" id="id_inst" name="mission" type="text" placeholder=""/>
+                                <input class="form-control" id="mission" name="mission" type="text" placeholder=""/>
                             </div>
                             <div class="row mb-3">
                                 <label><b>Coordinate</b></label>
                                 <div class="col-md-6">
-                                    <input class="form-control" id="latitude" name="latitude" type="text" value="{{ old('latitude') }}" autocomplete="off" placeholder="latitude">
+                                    <input class="form-control" id="lat" name="lat" type="text" value="{{ old('lat') }}" autocomplete="off" placeholder="latitude">
                                 </div>
                                 <div class="col-md-6">
-                                    <input class="form-control" id="longitude" name="longitude" type="text" value="{{ old('longitude') }}" autocomplete="off" placeholder="longitude">
+                                    <input class="form-control" id="long" name="long" type="text" value="{{ old('long') }}" autocomplete="off" placeholder="longitude">
                                 </div>
                             </div>
                             <div class="mb-3">
