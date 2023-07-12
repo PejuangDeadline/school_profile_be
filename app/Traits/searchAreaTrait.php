@@ -9,6 +9,7 @@ trait searchAreaTrait
 {
     public function provinceName($token,$province_id)
     {
+        //dd($province_id);
        //get Province name
        $ruleApiSearchProvince=Rule::where('rule_name','API Search Province by ID')->first();
        $url_ApiSearchProvince=$ruleApiSearchProvince->rule_value;
@@ -19,7 +20,7 @@ trait searchAreaTrait
        ]);
 
        $data=$getSearchProvince['data'][0];
-
+       //dd($data);
        return $data['nama'];
     }
 
@@ -35,7 +36,6 @@ trait searchAreaTrait
        ]);
 
        $data=$getSearchCity['data'][0];
-
        return $data['nama'];
     }
 
