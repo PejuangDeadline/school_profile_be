@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\InstitutionController;
+use App\Http\Controllers\MstFeatureController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\UserController;
 
@@ -39,6 +40,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/rule/store', [RulesController::class, 'store']);
     Route::patch('/rule/update/{id}', [RulesController::class, 'update']);
     Route::delete('/rule/delete/{id}', [RulesController::class, 'delete']);
+
+    //Rules Feature
+    Route::get('/feature', [MstFeatureController::class, 'index']);
 
     //User Controller
     Route::get('/user', [UserController::class, 'index']);
