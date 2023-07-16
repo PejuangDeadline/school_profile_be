@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DropdownController;
+use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\InstitutionController;
 use App\Http\Controllers\MstFeatureController;
 use App\Http\Controllers\RulesController;
@@ -58,6 +59,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/institution/profile-edit/{id_profile}', [InstitutionController::class, 'editProfile']);
     Route::post('/institution/profile/store', [InstitutionController::class, 'storeProfile']);
     Route::post('/institution/profile/update', [InstitutionController::class, 'updateProfile']);
+
+    //Facility
+    Route::get('/facility', [FacilityController::class, 'index']);
+    Route::post('/facility/store', [FacilityController::class, 'store']);
+    Route::post('/facility/update', [FacilityController::class, 'update']);
 
     //branch
     Route::post('/branch/store', [InstitutionController::class, 'storeBranch']);

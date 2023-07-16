@@ -9,9 +9,15 @@
                     <div class="nav-link-icon"><i data-feather="home"></i></div>
                     Home
                 </a>
+
                 <a class="nav-link" href="{{url('/institution')}}">
                     <div class="nav-link-icon"><i class="fas fa-school"></i></div>
                     Institution
+                </a>
+
+                <a class="nav-link" href="{{url('/facility')}}">
+                    <div class="nav-link-icon"><i class="fas fa-list"></i></div>
+                    Facility
                 </a>
 
                 <!-- Sidenav Menu Heading (Core)-->
