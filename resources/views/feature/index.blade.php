@@ -72,7 +72,12 @@
                                         </div>
                                     <br>
                                     <div class="form-group">
-                                      <input type="text" class="form-control" id="feature" name="feature" placeholder="Enter Feature " required>
+                                      <select name="branch" id="branch" class="form-control">
+                                        <option value="">- Please Select Feature -</option>
+                                        @foreach ($dropdown as $data)
+                                            <option value="{{ $data->name_value }}">{{ $data->name_value }}</option>
+                                        @endforeach
+                                      </select>
                                     </div>
                                     <br>
                                   </div>
