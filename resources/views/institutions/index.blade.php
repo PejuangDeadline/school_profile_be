@@ -125,7 +125,7 @@
                           @endphp
                           @foreach ($institutions as $data)
                           <tr>
-                              <td>{{ $no }}</td>
+                              <td>{{ $no++ }}</td>
                               <td>{{ $data->name }}</td>
                               <td>
                                   @if ($data->is_active == '1')

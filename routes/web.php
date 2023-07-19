@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DropdownController;
+use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\InstitutionController;
 use App\Http\Controllers\MstFeatureController;
 use App\Http\Controllers\RulesController;
@@ -59,8 +61,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/institution/profile/store', [InstitutionController::class, 'storeProfile']);
     Route::post('/institution/profile/update', [InstitutionController::class, 'updateProfile']);
 
+    //Facility
+    Route::get('/facility', [FacilityController::class, 'index']);
+    Route::post('/facility/store', [FacilityController::class, 'store']);
+    Route::post('/facility/update', [FacilityController::class, 'update']);
+
     //branch
     Route::post('/branch/store', [InstitutionController::class, 'storeBranch']);
+
+    //gallery
+    Route::get('/gallery', [GalleryController::class, 'index']);
+    Route::post('/gallery/store', [GalleryController::class, 'store']);
+    Route::post('/gallery/update', [GalleryController::class, 'update']);
+    Route::post('/gallery/delete', [GalleryController::class, 'delete']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
