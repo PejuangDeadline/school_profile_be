@@ -83,7 +83,7 @@ Route::middleware(['auth'])->group(function () {
     //ListBranch Controller
     Route::get('/list-branch/{id}', [ListBranchController::class, 'index']);
     Route::post('/list-branch/store', [ListBranchController::class, 'store']);
-    Route::patch('/list-branch/update/{id}', [ListBranchController::class, 'update']);
+    Route::post('/list-branch/update/{id}', [ListBranchController::class, 'update']);
     Route::delete('/list-branch/delete/{id}', [ListBranchController::class, 'delete']);
 
 

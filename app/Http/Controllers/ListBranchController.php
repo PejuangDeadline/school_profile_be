@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Branch;
 use Illuminate\Support\Facades\Http;
 use App\Models\Rule;
+use App\Models\Dropdown;
 
 use Illuminate\Http\Request;
 
@@ -11,8 +12,11 @@ class ListBranchController extends Controller
 {
     public function index($id){
         $id_branch = decrypt($id);
+        $dropdownGrades = Dropdown::where('category','Grade')
+        ->get();
 
         $branch = Branch::where('id_institution',$id_branch)->get();
+        $institution = Branch::where('id_institution',$id_branch)->first();
          //API Regional
          $ruleAuthRegional = Rule::where('rule_name', 'API Auth Regional')->first();
          $url_AuthRegional = $ruleAuthRegional->rule_value;
@@ -41,6 +45,15 @@ class ListBranchController extends Controller
          //End API Regional
 
         
-        return view('list-branch.index',compact('branch','provinces'));
+        return view('list-branch.index',compact('branch','provinces','institution','dropdownGrades'));
     }
+
+    public function delete($id){
+        dd($id);
+    }
+
+    public function update($id){
+        dd($id);
+    }
+
 }
