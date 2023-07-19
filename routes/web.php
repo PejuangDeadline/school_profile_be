@@ -10,6 +10,7 @@ use App\Http\Controllers\InstitutionController;
 use App\Http\Controllers\MstFeatureController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ListBranchController;
 
 
 /*
@@ -43,8 +44,11 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/rule/update/{id}', [RulesController::class, 'update']);
     Route::delete('/rule/delete/{id}', [RulesController::class, 'delete']);
 
-    //Rules Feature
+    //Feature Controller
     Route::get('/feature', [MstFeatureController::class, 'index']);
+    Route::post('/feature/store', [MstFeatureController::class, 'store']);
+    Route::patch('/feature/update/{id}', [MstFeatureController::class, 'update']);
+    Route::delete('/feature/delete/{id}', [MstFeatureController::class, 'delete']);
 
     //User Controller
     Route::get('/user', [UserController::class, 'index']);
@@ -75,6 +79,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/gallery/store', [GalleryController::class, 'store']);
     Route::post('/gallery/update', [GalleryController::class, 'update']);
     Route::post('/gallery/delete', [GalleryController::class, 'delete']);
+
+    //ListBranch Controller
+    Route::get('/list-branch/{id}', [ListBranchController::class, 'index']);
+    Route::post('/list-branch/store', [ListBranchController::class, 'store']);
+    Route::patch('/list-branch/update/{id}', [ListBranchController::class, 'update']);
+    Route::delete('/list-branch/delete/{id}', [ListBranchController::class, 'delete']);
+
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');

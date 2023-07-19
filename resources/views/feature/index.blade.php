@@ -59,20 +59,20 @@
                                   <h5 class="modal-title" id="modal-add-label">Add Feature</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form action="{{ url('/Feature/store') }}" method="POST">
+                                <form action="{{ url('/feature/store') }}" method="POST">
                                   @csrf
                                   <div class="modal-body">
                                     <div class="form-group">
                                         <select name="branch" id="branch" class="form-control">
                                             <option value="">- Please Select Branch -</option>
                                             @foreach ($branch as $data)
-                                                <option value="{{ $data->name }}">{{ $data->name }}</option>
+                                                <option value="{{ $data->id }}">{{ $data->name }}</option>
                                             @endforeach
                                           </select>
                                         </div>
                                     <br>
                                     <div class="form-group">
-                                      <select name="branch" id="branch" class="form-control">
+                                      <select name="feature" id="branch" class="form-control">
                                         <option value="">- Please Select Feature -</option>
                                         @foreach ($dropdown as $data)
                                             <option value="{{ $data->name_value }}">{{ $data->name_value }}</option>
@@ -128,7 +128,7 @@
                   <thead>
                   <tr>
                     <th>No</th>
-                    <th>Branch ID</th>
+                    <th>Branch Name</th>
                     <th>Feature</th>
                     <th>Action</th>
                   </tr>
@@ -140,7 +140,7 @@
                     @foreach ($feature as $data)
                     <tr>
                         <td>{{ $no++ }}</td>
-                        <td>{{ $data->id_branch }}</td>
+                        <td>{{ $data->name }}</td>
                         <td>{{ $data->feature }}</td>
                         <td>
                             <button title="Edit Feature" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update{{ $data->id }}">
@@ -160,22 +160,23 @@
                               <h4 class="modal-title" id="modal-update{{ $data->id }}-label">Edit Feature</h4>
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form action="{{ url('/Feature/update/'.$data->id) }}" method="POST">
+                            <form action="{{ url('/feature/update/'.$data->id) }}" method="POST">
                               @csrf
                               @method('patch')
                               <div class="modal-body">
-                                <div class="form-group">
-                                  <input name="id" type="text" value="{{$data->id}}" hidden>
-                                  <input type="text" class="form-control" id="category" name="category" placeholder="Enter Category Name" value="{{ $data->category }}">
-                                </div>
+                                <select name="branch" id="branch" class="form-control">
+                                  <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                  @foreach ($branch as $item)
+                                      <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                  @endforeach
+                                </select>
                                 <br>
-                                <div class="form-group">
-                                  <input type="text" class="form-control" id="name_value" name="name_value" placeholder="Enter Name Value Value" value="{{ $data->name_value }}">
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                  <input type="text" class="form-control" id="code_format" name="code_format" placeholder="Enter Code Format Value" value="{{ $data->code_format }}">
-                                </div>
+                                <select name="feature" id="branch" class="form-control">
+                                  <option value="{{ $data->feature }}">{{ $data->feature }}</option>
+                                  @foreach ($dropdown as $dropdowns)
+                                      <option value="{{ $dropdowns->name_value }}">{{ $dropdowns->name_value }}</option>
+                                  @endforeach
+                                </select>
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -195,7 +196,7 @@
                             <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Feature</h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form action="{{ url('/Feature/delete/'.$data->id) }}" method="POST">
+                            <form action="{{ url('/feature/delete/'.$data->id) }}" method="POST">
                             @csrf
                             @method('delete')
                             <div class="modal-body">
