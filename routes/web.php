@@ -65,6 +65,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/facility', [FacilityController::class, 'index']);
     Route::post('/facility/store', [FacilityController::class, 'store']);
     Route::post('/facility/update', [FacilityController::class, 'update']);
+    Route::post('/facility/delete', [FacilityController::class, 'delete']);
 
     //branch
     Route::post('/branch/store', [InstitutionController::class, 'storeBranch']);

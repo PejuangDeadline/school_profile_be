@@ -89,4 +89,26 @@ class FacilityController extends Controller
             return redirect('/facility')->with('failed','Failed Update Facility');
         }
     }
+
+    public function delete(Request $request){
+        //dd($request->all());
+        
+        DB::beginTransaction();
+
+        try {
+
+            $query = Facility::where('id',$request->id_facility)->delete();
+
+            DB::commit();
+            // all good
+
+            return redirect('/facility')->with('status','Success Delete Facility');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/facility')->with('failed','Failed Delete Facility');
+        }
+    }
 }
