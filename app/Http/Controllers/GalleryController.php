@@ -21,6 +21,8 @@ class GalleryController extends Controller
             'file_image' => 'required|mimes:jpeg,jpg,png|max:2048'
         ]);
 
+        $created_by = auth()->user()->email;
+
         DB::beginTransaction();
 
         try {
@@ -32,7 +34,8 @@ class GalleryController extends Controller
             }
     
             $store = Gallery::create([
-                'attachment' => $url
+                'attachment' => $url,
+                'created_by' => $created_by
             ]);
     
 
@@ -55,6 +58,8 @@ class GalleryController extends Controller
             'file_image' => 'required|mimes:jpeg,jpg,png|max:2048'
         ]);
 
+        $created_by = auth()->user()->email;
+
         DB::beginTransaction();
 
         try {
@@ -73,7 +78,8 @@ class GalleryController extends Controller
             }
         
             $update = Gallery::where('id',$request->id_gallery)->update([
-                'attachment' => $url
+                'attachment' => $url,
+                'created_by' => $created_by
             ]);
     
 
