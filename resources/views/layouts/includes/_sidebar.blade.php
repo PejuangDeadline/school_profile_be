@@ -20,6 +20,11 @@
                     Facility
                 </a>
 
+                <a class="nav-link" href="{{url('/gallery')}}">
+                    <div class="nav-link-icon"><i class="fas fa-images"></i></div>
+                    Gallery
+                </a>
+
                 <!-- Sidenav Menu Heading (Core)-->
                 <div class="sidenav-menu-heading">Configuration</div>
                 <!-- Sidenav Accordion (Utilities)-->
