@@ -118,6 +118,7 @@
                       <!--end validasi form-->
                     </div>
                 </div>
+                <div class="table-responsive"> 
                 <table id="tableUser" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -274,6 +275,7 @@
                   </tbody>
                 </table>
               </div>
+              </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
@@ -298,6 +300,7 @@
         "responsive": true, 
         "lengthChange": false, 
         "autoWidth": false,
+        "searching": false,
         // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       });
     });
