@@ -152,7 +152,7 @@
                                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                               <!-- Button trigger modal -->
                                               <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#addBranchModal{{ $data->id }}"><i class="fas fa-plus"></i> Add Branch</button>
-                                              <a class="dropdown-item" href="#!"><i class="fas fa-list"></i> List Branch</a>
+                                              <a class="dropdown-item" href="{{ url('/list-branch/'. encrypt($data->id)) }}"><i class="fas fa-list"></i> List Branch</a>
                                           </div>
                                       </div>
       
