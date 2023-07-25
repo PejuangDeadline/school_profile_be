@@ -286,7 +286,7 @@
                                 <strong>{{ $data->province }},</strong>
                                 <i>{{$data->city}},{{$data->district}},{{$data->sub_district}}</i>
                                  <p>{{$data->addr}}</p>
-                            
+
                             </td>
                               <td>{{ $data->owner }}</td>
                               <td>{{ $data->established }}</td>
@@ -308,8 +308,8 @@
                                   <div class="btn-group mr-2 mb-2" role="group">
                                     <button title="Delete Rule" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
                                         <i class="fas fa-trash-alt"></i>Delete Branch
-                                      </button>   
-      
+                                      </button>
+
                                        {{-- Modal Delete --}}
                                         <div class="modal fade" id="modal-delete{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -350,6 +350,18 @@
 
                                                         <div class="mb-3">
                                                             <input class="form-control" id="id_profile" name="id_profile" type="hidden" placeholder="" value="{{ $data->id }}" />
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div class="form-group">
+                                                                <select name="grade" id="grade" class="form-control">
+                                                                    <option value="">- Please Select Grade -</option>
+                                                                    <option class="text-center" value="{{$data->grade}}" selected>{{$data->grade}}</option>
+                                                                    @foreach ($dropdownGrades as $grade)
+                                                                        <option value="{{ $grade->name_value }}">{{ $grade->name_value }}</option>
+                                                                        <option class="text-center" value="{{$data->grade}}" {{ $grade->name_value == $data->grade ? 'selected' : '' }}>{{ $grade->name_value }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label><b>Abouts</b></label>
@@ -512,7 +524,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
               </div>
               <!-- /.card-body -->
             </div>
