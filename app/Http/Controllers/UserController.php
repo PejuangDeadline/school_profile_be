@@ -11,7 +11,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        $user = User::get();
+        $user = User::select('users.*','branches.name as branchname','branches.city')
+            ->leftJoin('branches','users.id_branch','branches.id')
+            ->get();
         $dropdown = Dropdown::where('category','Role')
         ->get();
         return view('users.index',compact('user','dropdown'));

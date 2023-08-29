@@ -33,16 +33,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index']);
 
     //Dropdown Controller
-    Route::get('/dropdown', [DropdownController::class, 'index']);
-    Route::post('/dropdown/store', [DropdownController::class, 'store']);
-    Route::patch('/dropdown/update/{id}', [DropdownController::class, 'update']);
-    Route::delete('/dropdown/delete/{id}', [DropdownController::class, 'delete']);
+    Route::get('/dropdown', [DropdownController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/dropdown/store', [DropdownController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::patch('/dropdown/update/{id}', [DropdownController::class, 'update'])->middleware(['checkRole:Super Admin']);
+    Route::delete('/dropdown/delete/{id}', [DropdownController::class, 'delete'])->middleware(['checkRole:Super Admin']);
 
     //Rules Controller
-    Route::get('/rule', [RulesController::class, 'index']);
-    Route::post('/rule/store', [RulesController::class, 'store']);
-    Route::patch('/rule/update/{id}', [RulesController::class, 'update']);
-    Route::delete('/rule/delete/{id}', [RulesController::class, 'delete']);
+    Route::get('/rule', [RulesController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/rule/store', [RulesController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::patch('/rule/update/{id}', [RulesController::class, 'update'])->middleware(['checkRole:Super Admin']);
+    Route::delete('/rule/delete/{id}', [RulesController::class, 'delete'])->middleware(['checkRole:Super Admin']);
 
     //Feature Controller
     Route::get('/feature', [MstFeatureController::class, 'index']);
@@ -51,34 +51,36 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/feature/delete/{id}', [MstFeatureController::class, 'delete']);
 
     //User Controller
-    Route::get('/user', [UserController::class, 'index']);
-    Route::post('/user/store', [UserController::class, 'store']);
-    Route::patch('/user/update/{user}',[UserController::class, 'update']);
-    Route::get('/user/revoke/{user}',[UserController::class, 'revoke']);
-    Route::get('/user/access/{user}',[UserController::class, 'access']);
+    Route::get('/user', [UserController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/user/store', [UserController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::patch('/user/update/{user}',[UserController::class, 'update'])->middleware(['checkRole:Super Admin']);
+    Route::get('/user/revoke/{user}',[UserController::class, 'revoke'])->middleware(['checkRole:Super Admin']);
+    Route::get('/user/access/{user}',[UserController::class, 'access'])->middleware(['checkRole:Super Admin']);
 
     //Institution
-    Route::get('/institution', [InstitutionController::class, 'index']);
-    Route::post('/institution/store', [InstitutionController::class, 'store']);
-    Route::get('/institution/profile/{id_inst}', [InstitutionController::class, 'createProfile']);
-    Route::get('/institution/profile-edit/{id_profile}', [InstitutionController::class, 'editProfile']);
-    Route::post('/institution/profile/store', [InstitutionController::class, 'storeProfile']);
-    Route::post('/institution/profile/update', [InstitutionController::class, 'updateProfile']);
+    Route::get('/institution', [InstitutionController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/institution/store', [InstitutionController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::get('/institution/profile/{id_inst}', [InstitutionController::class, 'createProfile'])->middleware(['checkRole:Super Admin']);
+    Route::get('/institution/profile-edit/{id_profile}', [InstitutionController::class, 'editProfile'])->middleware(['checkRole:Super Admin']);
+    Route::post('/institution/profile/store', [InstitutionController::class, 'storeProfile'])->middleware(['checkRole:Super Admin']);
+    Route::post('/institution/profile/update', [InstitutionController::class, 'updateProfile'])->middleware(['checkRole:Super Admin']);
 
     //Facility
-    Route::get('/facility', [FacilityController::class, 'index']);
-    Route::post('/facility/store', [FacilityController::class, 'store']);
-    Route::post('/facility/update', [FacilityController::class, 'update']);
-    Route::post('/facility/delete', [FacilityController::class, 'delete']);
+    Route::get('/facility', [FacilityController::class, 'index'])->middleware(['checkRole:User']);
+    Route::post('/facility/store', [FacilityController::class, 'store'])->middleware(['checkRole:User']);
+    Route::post('/facility/update', [FacilityController::class, 'update'])->middleware(['checkRole:User']);
+    Route::post('/facility/delete', [FacilityController::class, 'delete'])->middleware(['checkRole:User']);
 
     //branch
-    Route::post('/branch/store', [InstitutionController::class, 'storeBranch']);
+    Route::get('/branch', [InstitutionController::class, 'indexBranch'])->middleware(['checkRole:Super Admin']);
+    Route::post('/branch/store', [InstitutionController::class, 'storeBranch'])->middleware(['checkRole:Super Admin']);
+    Route::post('/branch/user', [InstitutionController::class, 'userBranch'])->middleware(['checkRole:Super Admin']);
 
     //gallery
-    Route::get('/gallery', [GalleryController::class, 'index']);
-    Route::post('/gallery/store', [GalleryController::class, 'store']);
-    Route::post('/gallery/update', [GalleryController::class, 'update']);
-    Route::post('/gallery/delete', [GalleryController::class, 'delete']);
+    Route::get('/gallery', [GalleryController::class, 'index'])->middleware(['checkRole:User']);
+    Route::post('/gallery/store', [GalleryController::class, 'store'])->middleware(['checkRole:User']);
+    Route::post('/gallery/update', [GalleryController::class, 'update'])->middleware(['checkRole:User']);
+    Route::post('/gallery/delete', [GalleryController::class, 'delete'])->middleware(['checkRole:User']);
 
     //ListBranch Controller
     Route::get('/list-branch/{id}', [ListBranchController::class, 'index']);

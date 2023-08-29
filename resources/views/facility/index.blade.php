@@ -63,16 +63,6 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3">
-                                            <div class="form-group">
-                                                <select name="branch" id="branch" class="form-control">
-                                                    <option value="">- Please Select Branch -</option>
-                                                    @foreach ($dropdownBranches as $branch)
-                                                        <option value="{{ $branch->id }}">{{ $branch->name." ".$branch->city." - ".$branch->grade }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
                                             <label><b>Facility Name</b></label>
                                             <input class="form-control" id="facility_name" name="facility_name" type="text" placeholder=""/>
                                         </div>
@@ -186,16 +176,6 @@
                                                     <div class="col">
                                                         <div class="mb-3">
                                                             <input class="form-control" id="id_facility" name="id_facility" type="hidden" value="{{ $data->id }}"/>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <div class="form-group">
-                                                                <select name="branch" id="branch" class="form-control">
-                                                                    <option value="">- Please Select Branch -</option>
-                                                                    @foreach ($dropdownBranches as $branch)
-                                                                        <option value="{{ $branch->id }}" {{ $branch->id == $data->id_branch ? 'selected' : '' }}>{{ $branch->name." ".$branch->city." - ".$branch->grade }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label><b>Facility Name</b></label>
