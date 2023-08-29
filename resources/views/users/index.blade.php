@@ -124,6 +124,7 @@
                   <tr>
                     <th>No</th>
                     <th>Name</th>
+                    <th>Branch</th>
                     <th>Email</th>
                     <th>Role</th>
                     <th>Last Login</th>
@@ -138,6 +139,11 @@
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{ $data->name }}</td>
+                        <td>
+                          @if($data->id_branch != '0')
+                          {{ $data->branchname." - ".$data->city }}
+                          @endif
+                        </td>
                         <td>{{ $data->email }}</td>
                         <td>{{ $data->role }}</td>
                         <td> {{ date('Y-m-d H:i:s', strtotime($data->last_login)) }}</td>

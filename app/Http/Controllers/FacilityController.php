@@ -13,9 +13,11 @@ class FacilityController extends Controller
     public function index(){
         // dd('hai');
         $dropdownBranches = Branch::get();
+        $id_branch = auth()->user()->id_branch;
 
         $facilities = Facility::select('facilities.*','branches.id as id_branch','branches.name','branches.grade','branches.city')
             ->leftJoin('branches','facilities.id_branch','branches.id')
+            ->where('id_branch',$id_branch)
             ->get();
 
         return view('facility.index',compact('dropdownBranches','facilities'));
@@ -24,19 +26,19 @@ class FacilityController extends Controller
     public function store(Request $request){
         //dd($request->all());
         $request->validate([
-            'branch' => 'required',
             'facility_name' => 'required',
             'description' => 'required',
         ]);
 
         $created_by = auth()->user()->email;
+        $id_branch = auth()->user()->id_branch;
         
         DB::beginTransaction();
 
         try {
 
             $query = Facility::create([
-                'id_branch' => $request->branch,
+                'id_branch' => $id_branch,
                 'facility_name' => $request->facility_name,
                 'description' => $request->description,
                 'created_by' => $created_by,
@@ -59,19 +61,19 @@ class FacilityController extends Controller
         // dd($request->all());
         $request->validate([
             'id_facility' => 'required',
-            'branch' => 'required',
             'facility_name' => 'required',
             'description' => 'required',
         ]);
 
         $created_by = auth()->user()->email;
+        $id_branch = auth()->user()->id_branch;
         
         DB::beginTransaction();
 
         try {
 
             $query = Facility::where('id',$request->id_facility)->update([
-                'id_branch' => $request->branch,
+                'id_branch' => $id_branch,
                 'facility_name' => $request->facility_name,
                 'description' => $request->description,
                 'created_by' => $created_by,

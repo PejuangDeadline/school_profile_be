@@ -7,6 +7,7 @@ use App\Models\Dropdown;
 use App\Models\Institution;
 use App\Models\InstitutionProfile;
 use App\Models\Rule;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -356,6 +357,47 @@ class InstitutionController extends Controller
         }
     }
 
+    public function indexBranch(){
+        // dd('hai');
+        $branchs = Branch::get();
+
+        $dropdownGrades = Dropdown::where('category','Grade')
+            ->get();
+
+        //API Regional
+        $ruleAuthRegional = Rule::where('rule_name', 'API Auth Regional')->first();
+        $url_AuthRegional = $ruleAuthRegional->rule_value;
+
+        $ruleEmailRegional = Rule::where('rule_name', 'Email Auth Regional')->first();
+        $emailRegional = $ruleEmailRegional->rule_value;
+
+        $rulePasswordRegional = Rule::where('rule_name', 'Password Auth Regional')->first();
+        $passwordRegional = $rulePasswordRegional->rule_value;
+
+        $response = Http::post($url_AuthRegional, [
+            'email' => $emailRegional,
+            'password' => $passwordRegional,
+        ]);
+
+        $data = $response['data'];
+        $token = $data['token'];
+
+        //get list province
+        $ruleApiProvince = Rule::where('rule_name', 'API List Province')->first();
+        $url_ApiProvince = $ruleApiProvince->rule_value;
+
+        $getProvince = Http::withToken($token)
+            ->get($url_ApiProvince);
+        $provinces = $getProvince['data'];
+        //End API Regional
+
+        $users = User::where('id_branch','0')
+            ->where('role','User')
+            ->get();
+
+        return view('branch.index',compact('branchs','dropdownGrades','provinces','users'));
+    }
+
     public function storeBranch(Request $request){
         //dd($request->all());
         $request->validate([
@@ -446,6 +488,31 @@ class InstitutionController extends Controller
             // something went wrong
 
             return redirect('/institution')->with('failed','Failed Add Branch');
+        }
+    }
+
+    public function userBranch(Request $request){
+        // dd('hai');
+        $request->validate([
+            'user' => 'required'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $query = User::where('id',$request->user)->update([
+                'id_branch' => $request->id_branch
+            ]);
+
+            DB::commit();
+            // all good
+
+            return redirect('/branch')->with('status','Success Add User');
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/branch')->with('failed','Failed Add User');
         }
     }
 }

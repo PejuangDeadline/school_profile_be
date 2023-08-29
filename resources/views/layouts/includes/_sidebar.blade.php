@@ -10,19 +10,10 @@
                     Home
                 </a>
 
+                @if(\Auth::user()->role === 'Super Admin')
                 <a class="nav-link" href="{{url('/institution')}}">
                     <div class="nav-link-icon"><i class="fas fa-school"></i></div>
                     Institution
-                </a>
-
-                <a class="nav-link" href="{{url('/facility')}}">
-                    <div class="nav-link-icon"><i class="fas fa-list"></i></div>
-                    Facility
-                </a>
-
-                <a class="nav-link" href="{{url('/gallery')}}">
-                    <div class="nav-link-icon"><i class="fas fa-images"></i></div>
-                    Gallery
                 </a>
 
                 <!-- Sidenav Menu Heading (Core)-->
@@ -41,6 +32,20 @@
                         <a class="nav-link" href="{{url('/user')}}">User</a>
                     </nav>
                 </div>
+                @endif
+
+                @if(\Auth::user()->role === 'User')
+                <a class="nav-link" href="{{url('/facility')}}">
+                    <div class="nav-link-icon"><i class="fas fa-list"></i></div>
+                    Facility
+                </a>
+
+                <a class="nav-link" href="{{url('/gallery')}}">
+                    <div class="nav-link-icon"><i class="fas fa-images"></i></div>
+                    Gallery
+                </a>
+                @endif
+                
             </div>
         </div>
         <!-- Sidenav Footer-->
