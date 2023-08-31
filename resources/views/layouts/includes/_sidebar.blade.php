@@ -44,8 +44,13 @@
                     <div class="nav-link-icon"><i class="fas fa-images"></i></div>
                     Gallery
                 </a>
+
+                <a class="nav-link" href="{{url('/culture')}}">
+                    <div class="nav-link-icon"><i class="fas fa-globe"></i></div>
+                    Culture
+                </a>
                 @endif
-                
+
             </div>
         </div>
         <!-- Sidenav Footer-->

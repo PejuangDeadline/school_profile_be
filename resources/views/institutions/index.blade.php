@@ -152,10 +152,10 @@
                                             <a class="dropdown-item" href="{{ url('/branch') }}"><i class="fas fa-list"></i> List Branch</a>
                                             <a href="" class="dropdown-item"><i class="fas fa-list"></i> List Vision</a>
                                             <a href="" class="dropdown-item"><i class="fas fa-list"></i> List Advantage</a>
-                                            <a href="" class="dropdown-item"><i class="fas fa-list"></i> List Culture</a>
+                                            <a href="{{ url('/culture/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-list"></i> List Culture</a>
                                       </div>
                                   </div>
-  
+
                                   <!-- Modal -->
                                   <div class="modal fade" id="addBranchModal{{ $data->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                       <div class="modal-dialog modal-xl" role="document">
@@ -343,7 +343,7 @@
                       @endforeach
                     </tbody>
                 </table>
-                
+
               </div>
               <!-- /.card-body -->
             </div>

@@ -8,8 +8,8 @@
                 <div class="row align-items-center justify-content-between">
                     <div class="col-auto mt-4">
                         <h1 class="page-header-title">
-                            <div class="page-header-icon"><i class="fas fa-school"></i></div>
-                            Gallery Menu
+                            <div class="page-header-icon"><i class="fas fa-globe"></i></div>
+                            Culture Menu
                         </h1>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Gallery</h3>
+                <h3 class="card-title">List of Culture</h3>
               </div>
 
               <!-- /.card-header -->
@@ -54,14 +54,27 @@
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modal-add-label">Add Gallery</h5>
+                                <h5 class="modal-title" id="modal-add-label">Add Culture</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form action="{{ url('/gallery/store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ url('/culture/store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-body">
                                 <div class="row">
+                                    <input class="form-control" id="id_institution" name="id_institution" type="hidden" placeholder="" value="{{ $id }}" />
                                     <div class="col">
+                                        <div class="mb-3">
+                                            <label><b>Title</b></label>
+                                            <input class="form-control" id="title" name="title" type="text" placeholder=""/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label><b>Description</b></label>
+                                            <textarea class="my-editor form-control" id="my-editor" name="description" cols="30" rows="10"></textarea>
+                                        </div>
+                                        <script>
+                                            CKEDITOR.replace('my-editor');
+                                            CKEDITOR.replaceAll('my-editor-edit');
+                                        </script>
                                         <div class="mb-3">
                                             <label><b>Upload Image</b></label>
                                             <input class="form-control" id="file_image" name="file_image" type="file" placeholder=""/>
@@ -109,12 +122,14 @@
                     <!--end validasi form-->
                 </div>
                 <div class="table-responsive">
-                    <table id="tableGallery" class="table table-striped table-hover dt-responsive display nowrap">
+                    <table id="tableCulture" class="table table-striped table-hover dt-responsive display nowrap">
                         <thead>
                         <tr>
                           <th>No</th>
+                          <th>Institution</th>
+                          <th>Title</th>
+                          <th>Description</th>
                           <th>Image</th>
-                          <th>Created By</th>
                           <th>Action</th>
                         </tr>
                         </thead>
@@ -122,9 +137,12 @@
                           @php
                             $no=1;
                           @endphp
-                          @foreach ($galleries as $data)
+                          @foreach ($culture as $data)
                           <tr>
                                 <td>{{ $no++ }}</td>
+                                <td>{{ $data->institution_name }}</td>
+                                <td>{{ $data->title }}</td>
+                                <td>{!! $data->description !!}</td>
                                 <td>
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#seeImageModal{{ $data->id }}">
@@ -143,7 +161,7 @@
                                             <div class="row text-center">
                                                 <div class="col">
                                                     <div class="mb-3">
-                                                        <img src="{{ asset($data->attachment) }}" class="img-fluid" alt="...">
+                                                        <img src="{{ asset($data->img) }}" class="img-fluid" alt="...">
                                                     </div>
                                                 </div>
                                             </div>
@@ -152,7 +170,6 @@
                                     </div>
                                 </div>
                                 </td>
-                                <td>{{ $data->created_by }}</td>
                                 <td>
                                     <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit{{ $data->id }}">
                                         <i class="fas fa-edit"></i> Edit
@@ -169,20 +186,42 @@
                                                 <h5 class="modal-title" id="modal-add-label">Edit Gallery</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form action="{{ url('/gallery/update') }}" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ url('/culture/update') }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="mb-3">
-                                                            <input class="form-control" id="id_gallery" name="id_gallery" type="hidden" value="{{ $data->id }}"/>
+                                                            <input class="form-control" id="id_institution" name="id_institution" type="hidden" value="{{ $data->id }}"/>
                                                         </div>
+                                                        <div class="mb-3">
+                                                            <label><b>Title</b></label>
+                                                            <input class="form-control" id="title" name="title" type="text" value="{{ $data->title }}" placeholder=""/>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label><b>Description</b></label>
+                                                            <textarea id="editdescription{{ $data->id }}" class="form-control" name="description" rows="10" cols="50"> {{ $data->description }} </textarea>
+                                                            <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+                                                            <script>
+                                                                CKEDITOR.replace('editdescription' + {{ $data->id }}, {
+                                                                    language:'en-gb'
+                                                                });
+                                                            </script>
+                                                        </div>
+                                                        <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
+                                                        <script>
+                                                            var description = document.getElementById("description");
+
+                                                            CKEDITOR.replace(description{
+                                                                language:'en-gb'
+                                                            });
+                                                        </script>
                                                         <div class="mb-3">
                                                             <label><b>Upload Image</b></label>
                                                             <input class="form-control" id="file_image" name="file_image" type="file"/>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <img src="{{ asset($data->attachment) }}" class="img-fluid" alt="...">
+                                                            <img src="{{ asset($data->img) }}" class="img-fluid" alt="...">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -204,19 +243,19 @@
                                                 <h5 class="modal-title" id="modal-add-label">Delete Gallery</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form action="{{ url('/gallery/delete') }}" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ url('/culture/delete') }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="mb-3">
-                                                            <input class="form-control" id="id_gallery" name="id_gallery" type="hidden" value="{{ $data->id }}"/>
+                                                            <input class="form-control" id="id_institution" name="id_institution" type="hidden" value="{{ $data->id }}"/>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label><b>Are you sure to delete this image from gallery ?</b></label>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <img src="{{ asset($data->attachment) }}" class="img-fluid" alt="...">
+                                                            <img src="{{ asset($data->img) }}" class="img-fluid" alt="...">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -262,7 +301,7 @@
 </script>
 <script>
     $(document).ready(function() {
-      var table = $("#tableGallery").DataTable({
+      var table = $("#tableFacility").DataTable({
         "responsive": true,
         "lengthChange": false,
         "autoWidth": false,
