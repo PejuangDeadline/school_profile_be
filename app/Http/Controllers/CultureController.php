@@ -94,14 +94,13 @@ class CultureController extends Controller
                 'img' => $url,
             ]);
 
-
             DB::commit();
             // all good
 
             $id_ins = encrypt($id_institution);
             return redirect('/culture/' . $id_ins)->with('status','Success Update Culture');
         } catch (\Exception $e) {
-            dd($e);
+            //dd($e);
             DB::rollback();
             // something went wrong
             $id_ins = encrypt($id_institution);
