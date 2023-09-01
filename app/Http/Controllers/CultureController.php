@@ -111,6 +111,7 @@ class CultureController extends Controller
     public function delete(Request $request){
         //dd('store');
         $id_institution = $request->id_institution;
+        $id_ins = encrypt($id_institution);
         DB::beginTransaction();
 
         try {
@@ -127,13 +128,11 @@ class CultureController extends Controller
 
             DB::commit();
             // all good
-            $id_ins = encrypt($id_institution);
             return redirect('/culture/' . $id_ins)->with('status','Success Delete Culture');
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
             // something went wrong
-            $id_ins = encrypt($id_institution);
             return redirect('/culture/' . $id_ins)->with('failed','Failed Delete Culture');
         }
     }
