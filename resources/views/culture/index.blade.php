@@ -192,7 +192,8 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="mb-3">
-                                                            <input class="form-control" id="id_institution" name="id_institution" type="hidden" value="{{ $data->id }}"/>
+                                                            <input class="form-control" id="id" name="id" type="hidden" value="{{ $data->id }}"/>
+                                                            <input class="form-control" id="id_institution" name="id_institution" type="hidden" value="{{ $data->id_institution }}"/>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label><b>Title</b></label>
@@ -240,7 +241,7 @@
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="modal-add-label">Delete Gallery</h5>
+                                                <h5 class="modal-title" id="modal-add-label">Delete Culture</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <form action="{{ url('/culture/delete') }}" method="POST" enctype="multipart/form-data">
@@ -249,10 +250,11 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="mb-3">
-                                                            <input class="form-control" id="id_institution" name="id_institution" type="hidden" value="{{ $data->id }}"/>
+                                                            <input class="form-control" id="id" name="id" type="hidden" value="{{ $data->id }}"/>
+                                                            <input class="form-control" id="id_institution" name="id_institution" type="hidden" value="{{ $data->id_institution }}"/>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <label><b>Are you sure to delete this image from gallery ?</b></label>
+                                                            <label><b>Are you sure to delete this culture?</b></label>
                                                         </div>
                                                         <div class="mb-3">
                                                             <img src="{{ asset($data->img) }}" class="img-fluid" alt="...">

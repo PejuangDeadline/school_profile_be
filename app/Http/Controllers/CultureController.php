@@ -14,7 +14,7 @@ class CultureController extends Controller
     {
         // dd('hai');
         $id = decrypt($id);
-        $culture = Culture::select('cultures.*','institutions.name as institution_name')
+        $culture = Culture::select('cultures.*','institutions.name as institution_name','institutions.id as id_institution')
         ->leftjoin('institutions','institutions.id','cultures.id_institution')
         ->where('id_institution',$id)
         ->get();
@@ -64,17 +64,18 @@ class CultureController extends Controller
 
     public function update(Request $request){
         //dd('store');
-        $request->validate([
-            'file_image' => 'required|mimes:jpeg,jpg,png|max:2048'
-        ]);
+        // $request->validate([
+        //     'file_image' => 'required|mimes:jpeg,jpg,png|max:2048'
+        // ]);
 
+        $id = $request->id;
         $id_institution = $request->id_institution;
 
         DB::beginTransaction();
 
         try {
             //cari gambar lama
-            $image = Culture::where('id',$id_institution)->first();
+            $image = Culture::where('id',$id)->first();
 
             $image_path = $image->img;  // Value is not URL but directory file path
             if(File::exists($image_path)) {
@@ -87,8 +88,7 @@ class CultureController extends Controller
                 $url = $path_attach->move('storage/culture', $path_attach->hashName());
             }
 
-            $update = Culture::where('id',$id_institution)->update([
-                'id_institution' => $id_institution,
+            $update = Culture::where('id',$id)->update([
                 'title' => $request->title,
                 'description' => $request->description,
                 'img' => $url,
@@ -110,20 +110,21 @@ class CultureController extends Controller
 
     public function delete(Request $request){
         //dd('store');
+        $id = $request->id;
         $id_institution = $request->id_institution;
         $id_ins = encrypt($id_institution);
         DB::beginTransaction();
 
         try {
             //cari gambar lama
-            $image = Culture::where('id',$request->id_institution)->first();
+            $image = Culture::where('id',$id)->first();
 
             $image_path = $image->attachment;  // Value is not URL but directory file path
             if(File::exists($image_path)) {
                 File::delete($image_path);
             }
 
-            $delete = Culture::where('id',$request->id_institution)->delete();
+            $delete = Culture::where('id',$id)->delete();
 
 
             DB::commit();
