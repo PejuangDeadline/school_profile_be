@@ -166,6 +166,8 @@ class ListBranchController extends Controller
                         'twitter' => $request->twitter,
                         'pic' => $request->pic,
                         'pic_no' => $request->pic_no,
+                        'open_at' => $request->open_at,
+                        'email' => $request->email,
                         'owner' => $request->owner,
                         'established' => $request->established
                     ]);
@@ -192,6 +194,8 @@ class ListBranchController extends Controller
                         'twitter' => $request->twitter,
                         'pic' => $request->pic,
                         'pic_no' => $request->pic_no,
+                        'open_at' => $request->open_at,
+                        'email' => $request->email,
                         'owner' => $request->owner,
                         'established' => $request->established
                     ]);
