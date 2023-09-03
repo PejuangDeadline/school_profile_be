@@ -8,8 +8,8 @@
                 <div class="row align-items-center justify-content-between">
                     <div class="col-auto mt-4">
                         <h1 class="page-header-title">
-                            <div class="page-header-icon"><i class="fas fa-bullseye"></i></div>
-                            Vision Menu
+                            <div class="page-header-icon"><i class="fas fa-trophy"></i></div>
+                            Advantage Menu
                         </h1>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Vision</h3>
+                <h3 class="card-title">List of Advantage</h3>
               </div>
 
               <!-- /.card-header -->
@@ -54,15 +54,19 @@
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modal-add-label">Add Vision</h5>
+                                <h5 class="modal-title" id="modal-add-label">Add Advantage</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form action="{{ url('/vision/store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ url('/advantage/store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-body">
                                 <div class="row">
                                     <input class="form-control" id="id_institution" name="id_institution" type="hidden" placeholder="" value="{{ $id }}" />
                                     <div class="col">
+                                        <div class="mb-3">
+                                            <label><b>Title</b></label>
+                                            <input class="form-control" id="title" name="title" type="text" placeholder=""/>
+                                        </div>
                                         <div class="mb-3">
                                             <label><b>Description</b></label>
                                             <textarea class="my-editor form-control" id="my-editor" name="description" cols="30" rows="10"></textarea>
@@ -71,10 +75,6 @@
                                             CKEDITOR.replace('my-editor');
                                             CKEDITOR.replaceAll('my-editor-edit');
                                         </script>
-                                        <div class="mb-3">
-                                            <label><b>Upload Icon</b></label>
-                                            <input class="form-control" id="file_image" name="file_image" type="file" placeholder=""/>
-                                        </div>
                                     </div>
                                 </div>
                                 </div>
@@ -118,13 +118,13 @@
                     <!--end validasi form-->
                 </div>
                 <div class="table-responsive">
-                    <table id="tableVision" class="table table-striped table-hover dt-responsive display nowrap">
+                    <table id="tableAdvantage" class="table table-striped table-hover dt-responsive display nowrap">
                         <thead>
                         <tr>
                           <th>No</th>
                           <th>Institution</th>
+                          <th>Title</th>
                           <th>Description</th>
-                          <th>Image</th>
                           <th>Status</th>
                           <th>Action</th>
                         </tr>
@@ -133,38 +133,13 @@
                           @php
                             $no=1;
                           @endphp
-                          @foreach ($vision as $data)
+                          @foreach ($advantage as $data)
                           <tr>
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $data->institution_name }}</td>
+                                <td>{{ $data->title }}</td>
                                 <td>{!! $data->description !!}</td>
-                                <td>
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#seeImageModal{{ $data->id }}">
-                                    <i class="fas fa-eye"></i> See Image
-                                </button>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="seeImageModal{{ $data->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Preview Image</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row text-center">
-                                                <div class="col">
-                                                    <div class="mb-3">
-                                                        <img src="{{ asset($data->img) }}" class="img-fluid" alt="...">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                                </td>
+                               
                                 <td>
                                     @if ($data->is_active=='1')
                                     <button title="Revoke Access" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-unactivate{{ $data->id }}">
@@ -178,12 +153,12 @@
                                                     <h5 class="modal-title" id="modal-unactivate-label">Confirmation</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <form action="{{ url('/vision/deactive') }}" method="POST" enctype="multipart/form-data">
+                                                <form action="{{ url('/advantage/deactive') }}" method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     <input class="form-control" id="id_institution" name="id_institution" type="hidden" placeholder="" value="{{ $id }}" />
                                                     <input class="form-control" id="id_institution" name="id" type="hidden" placeholder="" value="{{ $data->id }}" />
                                                     <div class="modal-body">
-                                                        Are you sure you want to deactivate this vision?
+                                                        Are you sure you want to deactivate this Advantage?
                                                     </div>
                                                     <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -206,12 +181,12 @@
                                                     <h5 class="modal-title" id="modal-active-label">Confirmation</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <form action="{{ url('/vision/active') }}" method="POST" enctype="multipart/form-data">
+                                                <form action="{{ url('/advantage/active') }}" method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     <input class="form-control" id="id_institution" name="id_institution" type="hidden" placeholder="" value="{{ $id }}" />
                                                     <input class="form-control" id="id_institution" name="id" type="hidden" placeholder="" value="{{ $data->id }}" />
                                                     <div class="modal-body">
-                                                        Are you sure you want to activate this vision?
+                                                        Are you sure you want to activate this Advantage?
                                                     </div>
                                                     <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -240,7 +215,7 @@
                                                 <h5 class="modal-title" id="modal-add-label">Edit Gallery</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form action="{{ url('/vision/update') }}" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ url('/advantage/update') }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body">
                                                 <div class="row">
@@ -248,6 +223,10 @@
                                                         <div class="mb-3">
                                                             <input class="form-control" id="id" name="id" type="hidden" value="{{ $data->id }}"/>
                                                             <input class="form-control" id="id_institution" name="id_institution" type="hidden" value="{{ $data->id_institution }}"/>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label><b>Title</b></label>
+                                                            <input class="form-control" id="title" name="title" type="text" value="{{ $data->title }}" placeholder=""/>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label><b>Description</b></label>
@@ -267,13 +246,6 @@
                                                                 language:'en-gb'
                                                             });
                                                         </script>
-                                                        <div class="mb-3">
-                                                            <label><b>Upload Image</b></label>
-                                                            <input class="form-control" id="file_image" name="file_image" type="file"/>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <img src="{{ asset($data->img) }}" class="img-fluid" alt="...">
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 </div>
@@ -291,10 +263,10 @@
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="modal-add-label">Delete Vision</h5>
+                                                <h5 class="modal-title" id="modal-add-label">Delete Advantage</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form action="{{ url('/vision/delete') }}" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ url('/advantage/delete') }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body">
                                                 <div class="row">
@@ -304,10 +276,7 @@
                                                             <input class="form-control" id="id_institution" name="id_institution" type="hidden" value="{{ $data->id_institution }}"/>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <label><b>Are you sure to delete this Vision?</b></label>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <img src="{{ asset($data->img) }}" class="img-fluid" alt="...">
+                                                            <label><b>Are you sure to delete this Advantage?</b></label>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -102,12 +102,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/vision/store', [VisionController::class, 'store'])->middleware(['checkRole:Super Admin']);
     Route::post('/vision/update', [VisionController::class, 'update'])->middleware(['checkRole:Super Admin']);
     Route::post('/vision/delete', [VisionController::class, 'delete'])->middleware(['checkRole:Super Admin']);
+    Route::post('/vision/active', [VisionController::class, 'active'])->middleware(['checkRole:Super Admin']);
+    Route::post('/vision/deactive', [VisionController::class, 'deactive'])->middleware(['checkRole:Super Admin']);
 
      //advantage
      Route::get('/advantage/{id}', [AdvantageController::class, 'index'])->middleware(['checkRole:Super Admin']);
      Route::post('/advantage/store', [AdvantageController::class, 'store'])->middleware(['checkRole:Super Admin']);
      Route::post('/advantage/update', [AdvantageController::class, 'update'])->middleware(['checkRole:Super Admin']);
      Route::post('/advantage/delete', [AdvantageController::class, 'delete'])->middleware(['checkRole:Super Admin']);
+     Route::post('/advantage/active', [AdvantageController::class, 'active'])->middleware(['checkRole:Super Admin']);
+     Route::post('/advantage/deactive', [AdvantageController::class, 'deactive'])->middleware(['checkRole:Super Admin']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
