@@ -150,8 +150,8 @@
                                                 <a href="{{ url('/institution/profile/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-edit"></i> Add Profile</a>
                                             @endif
                                             <a class="dropdown-item" href="{{ url('/branch') }}"><i class="fas fa-list"></i> List Branch</a>
-                                            <a href="" class="dropdown-item"><i class="fas fa-list"></i> List Vision</a>
-                                            <a href="" class="dropdown-item"><i class="fas fa-list"></i> List Advantage</a>
+                                            <a href="{{ url('vision/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-list"></i> List Vision</a>
+                                            <a href="{{ url('advantage/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-list"></i> List Advantage</a>
                                             <a href="{{ url('/culture/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-list"></i> List Culture</a>
                                       </div>
                                   </div>

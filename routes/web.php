@@ -12,7 +12,8 @@ use App\Http\Controllers\RulesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ListBranchController;
 use App\Http\Controllers\CultureController;
-
+use App\Http\Controllers\AdvantageController;
+use App\Http\Controllers\VisionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +95,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/culture/store', [CultureController::class, 'store'])->middleware(['checkRole:Super Admin']);
     Route::post('/culture/update', [CultureController::class, 'update'])->middleware(['checkRole:Super Admin']);
     Route::post('/culture/delete', [CultureController::class, 'delete'])->middleware(['checkRole:Super Admin']);
+
+    //vision
+    Route::get('/vision/{id}', [VisionController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/vision/store', [VisionController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::post('/vision/update', [VisionController::class, 'update'])->middleware(['checkRole:Super Admin']);
+    Route::post('/vision/delete', [VisionController::class, 'delete'])->middleware(['checkRole:Super Admin']);
+
+     //advantage
+     Route::get('/advantage/{id}', [AdvantageController::class, 'index'])->middleware(['checkRole:Super Admin']);
+     Route::post('/advantage/store', [AdvantageController::class, 'store'])->middleware(['checkRole:Super Admin']);
+     Route::post('/advantage/update', [AdvantageController::class, 'update'])->middleware(['checkRole:Super Admin']);
+     Route::post('/advantage/delete', [AdvantageController::class, 'delete'])->middleware(['checkRole:Super Admin']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
