@@ -157,38 +157,38 @@
                                                             <select name="grade" id="grade" class="form-control">
                                                                 <option value="">- Please Select Grade -</option>
                                                                 @foreach ($dropdownGrades as $grade)
-                                                                    <option value="{{ $grade->name_value }}">{{ $grade->name_value }}</option>
+                                                                    <option value="{{ $grade->name_value }}" {{ $grade->name_value == $data->grade ? 'selected' : '' }}>{{ $grade->name_value }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <input class="form-control" id="name_branch" name="name_branch" type="text" placeholder="Input Branch Name"/>
+                                                        <input class="form-control" id="name_branch" name="name_branch" type="text" value="{{ $data->name }}" placeholder="Input Branch Name"/>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label><b>Abouts</b></label>
-                                                        <textarea class="my-editor form-control" id="my-editor" name="about" cols="30" rows="10""></textarea>
+                                                        <textarea class="my-editor form-control" id="my-editor" name="about" cols="30" rows="10">{{ old('about', $data->about) }}</textarea>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label><b>Vision</b></label>
-                                                        <input class="form-control" id="vision" name="vision" type="text" placeholder=""/>
+                                                        <input class="form-control" id="vision" name="vision" type="text" value="{{ old('vision', $data->vision) }}" placeholder=""/>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label><b>Mission</b></label>
-                                                        <input class="form-control" id="mission" name="mission" type="text" placeholder=""/>
+                                                        <input class="form-control" id="mission" name="mission" type="text" value="{{ old('mission', $data->mission) }}" placeholder=""/>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <label><b>Coordinate</b></label>
                                                         <div class="col-md-6">
-                                                            <input class="form-control" id="lat" name="lat" type="text" value="{{ old('lat') }}" autocomplete="off" placeholder="latitude">
+                                                            <input class="form-control" id="lat" name="lat" type="text" value="{{ old('lat', $data->lat) }}" autocomplete="off" placeholder="latitude">
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <input class="form-control" id="long" name="long" type="text" value="{{ old('long') }}" autocomplete="off" placeholder="longitude">
+                                                            <input class="form-control" id="long" name="long" type="text" value="{{ old('long', $data->long) }}" autocomplete="off" placeholder="longitude">
                                                         </div>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label><b>Address</b></label>
-                                                        <textarea class="form-control" id="addr" name="addr" cols="30" rows="3" placeholder=""></textarea>
+                                                        <textarea class="form-control" id="addr" name="addr" cols="30" rows="3" placeholder="">{{ old('addr', $data->addr) }}</textarea>
                                                     </div>
                                                     <div class="row mb-3" align="left">
                                                         <div class="col-md-3">
@@ -199,7 +199,7 @@
                                                             <select class="form-control" name="province_by_id" id="province_by_id">
                                                                 <option class="text-center" value="" selected>- Select Province -</option>
                                                                 @foreach ($provinces as $province)
-                                                                <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
+                                                                <option class="text-center" value="{{ $province['id'] }}" {{ $province['nama'] == $data->province ? 'selected' : '' }}>{{ $province['nama'] }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -210,7 +210,7 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <select name="city" id="city" class="form-control" required>
-                                                                <option class="text-center" value="">- Select City -</option>
+                                                                <option class="text-center" value="{{ $data->city }}" {{ $data->city ? 'selected' : '' }}>{{ $data->city }}</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -222,7 +222,7 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <select id="district" name="district" class="form-control">
-                                                                <option class="text-center" value="">- Select District -</option>
+                                                                <option class="text-center" value="{{ $data->district }}" {{ $data->district ? 'selected' : '' }}>{{ $data->district }}</option>
                                                             </select>
                                                         </div>
                                                         @csrf
@@ -232,7 +232,7 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <select id="subdistrict" name="subdistrict" class="form-control">
-                                                                <option class="text-center" value="">- Select Subdistrict -</option>
+                                                                <option class="text-center" value="{{ $data->subdistrict }}" {{ $data->subdistrict ? 'selected' : '' }}>{{ $data->subdistrict }}</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -243,7 +243,7 @@
                                                             <small class="text-muted" style="font-style: italic;">Postal Code</small>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <input type="text" id="zip_code" name="zip_code" class="form-control text-center" value="" autocomplete="off">
+                                                            <input type="text" id="zip_code" name="zip_code" class="form-control text-center" value="{{ $data->zip_code }}" autocomplete="off">
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
@@ -251,13 +251,13 @@
                                                             <span><b>Phone 1</b></span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <input type="text" id="phone1" name="phone1" class="form-control" value="" autocomplete="off">
+                                                            <input type="text" id="phone1" name="phone1" class="form-control" value="{{ $data->phone1 }}" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-3">
                                                             <span><b>Phone 2</b></span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <input type="text" id="phone2" name="phone2" class="form-control" value="" autocomplete="off">
+                                                            <input type="text" id="phone2" name="phone2" class="form-control" value="{{ $data->phone2 }}" autocomplete="off">
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
@@ -265,13 +265,13 @@
                                                             <span><b>Whatsapp</b></span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <input type="text" id="whatsapp" name="whatsapp" class="form-control" value="" autocomplete="off">
+                                                            <input type="text" id="whatsapp" name="whatsapp" class="form-control" value="{{ $data->whatsapp }}" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-3">
                                                             <span><b>Instagram</b></span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <input type="text" id="instagram" name="instagram" class="form-control" value="" autocomplete="off">
+                                                            <input type="text" id="instagram" name="instagram" class="form-control" value="{{ $data->instagram }}" autocomplete="off">
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
@@ -279,13 +279,13 @@
                                                             <span><b>Facebook</b></span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <input type="text" id="facebook" name="facebook" class="form-control" value="" autocomplete="off">
+                                                            <input type="text" id="facebook" name="facebook" class="form-control" value="{{ $data->facebook }}" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-3">
                                                             <span><b>Twitter</b></span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <input type="text" id="twitter" name="twitter" class="form-control" value="" autocomplete="off">
+                                                            <input type="text" id="twitter" name="twitter" class="form-control" value="{{ $data->twitter }}" autocomplete="off">
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
@@ -293,30 +293,30 @@
                                                             <span><b>PIC</b></span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <input type="text" id="pic" name="pic" class="form-control" value="" autocomplete="off">
+                                                            <input type="text" id="pic" name="pic" class="form-control" value="{{ $data->pic }}" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-3">
                                                             <span><b>PIC Phone</b></span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <input type="text" id="pic_no" name="pic_no" class="form-control" value="" autocomplete="off">
+                                                            <input type="text" id="pic_no" name="pic_no" class="form-control" value="{{ $data->pic_no }}" autocomplete="off">
                                                         </div>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label><b>Open At</b></label>
-                                                        <input class="form-control" id="open_at" name="open_at" type="time" placeholder=""/>
-                                                      </div>
+                                                        <input class="form-control" id="open_at" name="open_at" type="time" value="{{ $data->open_at }}" placeholder=""/>
+                                                    </div>
                                                     <div class="mb-3">
                                                         <label><b>Email</b></label>
-                                                        <input class="form-control" id="email" name="email" type="email" placeholder=""/>
+                                                        <input class="form-control" id="email" name="email" type="email" value="{{ $data->email }}" placeholder=""/>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label><b>Owner</b></label>
-                                                        <input class="form-control" id="owner" name="owner" type="text" placeholder=""/>
+                                                        <input class="form-control" id="owner" name="owner" type="text" value="{{ $data->owner }}" placeholder=""/>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label><b>Established</b></label>
-                                                        <input class="form-control" id="established" name="established" type="date" placeholder=""/>
+                                                        <input class="form-control" id="established" name="established" type="date" value="{{ $data->established }}" placeholder=""/>
                                                     </div>
                                                 </div>
                                             <div class="modal-footer">
@@ -333,7 +333,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                
+
               </div>
               <!-- /.card-body -->
             </div>

@@ -364,8 +364,11 @@
                                                             </div>
                                                         </div>
                                                         <div class="mb-3">
+                                                            <input class="form-control" id="name" name="name" type="text" value="{{ $data->name }}" placeholder="Input Branch Name"/>
+                                                        </div>
+                                                        <div class="mb-3">
                                                             <label><b>Abouts</b></label>
-                                                            <textarea class="my-editor form-control" id="my-editor" name="about" cols="30" rows="10"">{{ $data->about }}</textarea>
+                                                            <textarea class="my-editor form-control" id="my-editor" name="about" cols="30" rows="10">{{ $data->about }}</textarea>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label><b>Vision</b></label>
@@ -499,6 +502,14 @@
                                                             <div class="col-md-3">
                                                                 <input type="text" id="pic_no" name="pic_no" class="form-control" value="{{ $data->pic_no }}" autocomplete="off">
                                                             </div>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label><b>Open At</b></label>
+                                                            <input class="form-control" id="open_at" name="open_at" type="time" value="{{ $data->open_at }}" placeholder=""/>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label><b>Email</b></label>
+                                                            <input class="form-control" id="email" name="email" type="email" value="{{ $data->email }}" placeholder=""/>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label><b>Owner</b></label>
