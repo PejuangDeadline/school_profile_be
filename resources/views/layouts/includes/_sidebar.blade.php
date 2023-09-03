@@ -45,7 +45,7 @@
                     Gallery
                 </a>
                 @endif
-                
+
             </div>
         </div>
         <!-- Sidenav Footer-->

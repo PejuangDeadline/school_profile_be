@@ -149,13 +149,13 @@
                                             @else
                                                 <a href="{{ url('/institution/profile/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-edit"></i> Add Profile</a>
                                             @endif
-                                            <a class="dropdown-item" href="{{ url('/branch') }}"><i class="fas fa-list"></i> List Branch</a>
+                                            <a class="dropdown-item" href="{{ url('/list-branch/'.encrypt($data->id)) }}"><i class="fas fa-list"></i> List Branch</a>
                                             <a href="" class="dropdown-item"><i class="fas fa-list"></i> List Vision</a>
                                             <a href="" class="dropdown-item"><i class="fas fa-list"></i> List Advantage</a>
-                                            <a href="" class="dropdown-item"><i class="fas fa-list"></i> List Culture</a>
+                                            <a href="{{ url('/culture/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-list"></i> List Culture</a>
                                       </div>
                                   </div>
-  
+
                                   <!-- Modal -->
                                   <div class="modal fade" id="addBranchModal{{ $data->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                       <div class="modal-dialog modal-xl" role="document">
@@ -185,7 +185,7 @@
                                                   </div>
                                                   <div class="mb-3">
                                                       <label><b>Abouts</b></label>
-                                                      <textarea class="my-editor form-control" id="my-editor" name="about" cols="30" rows="10""></textarea>
+                                                      <textarea class="my-editor form-control" id="my-editor" name="about" cols="30" rows="10"></textarea>
                                                   </div>
                                                   <div class="mb-3">
                                                       <label><b>Vision</b></label>
@@ -351,7 +351,7 @@
                       @endforeach
                     </tbody>
                 </table>
-                
+
               </div>
               <!-- /.card-body -->
             </div>

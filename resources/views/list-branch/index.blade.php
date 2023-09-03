@@ -286,7 +286,7 @@
                                 <strong>{{ $data->province }},</strong>
                                 <i>{{$data->city}},{{$data->district}},{{$data->sub_district}}</i>
                                  <p>{{$data->addr}}</p>
-                            
+
                             </td>
                               <td>{{ $data->owner }}</td>
                               <td>{{ $data->established }}</td>
@@ -308,8 +308,8 @@
                                   <div class="btn-group mr-2 mb-2" role="group">
                                     <button title="Delete Rule" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
                                         <i class="fas fa-trash-alt"></i>Delete Branch
-                                      </button>   
-      
+                                      </button>
+
                                        {{-- Modal Delete --}}
                                         <div class="modal fade" id="modal-delete{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -352,8 +352,23 @@
                                                             <input class="form-control" id="id_profile" name="id_profile" type="hidden" placeholder="" value="{{ $data->id }}" />
                                                         </div>
                                                         <div class="mb-3">
+                                                            <div class="form-group">
+                                                                <select name="grade" id="grade" class="form-control">
+                                                                    <option value="">- Please Select Grade -</option>
+                                                                    <option class="text-center" value="{{$data->grade}}" selected>{{$data->grade}}</option>
+                                                                    @foreach ($dropdownGrades as $grade)
+                                                                        <option value="{{ $grade->name_value }}">{{ $grade->name_value }}</option>
+                                                                        <option class="text-center" value="{{$data->grade}}" {{ $grade->name_value == $data->grade ? 'selected' : '' }}>{{ $grade->name_value }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <input class="form-control" id="name" name="name" type="text" value="{{ $data->name }}" placeholder="Input Branch Name"/>
+                                                        </div>
+                                                        <div class="mb-3">
                                                             <label><b>Abouts</b></label>
-                                                            <textarea class="my-editor form-control" id="my-editor" name="about" cols="30" rows="10"">{{ $data->about }}</textarea>
+                                                            <textarea class="my-editor form-control" id="my-editor" name="about" cols="30" rows="10">{{ $data->about }}</textarea>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label><b>Vision</b></label>
@@ -489,6 +504,14 @@
                                                             </div>
                                                         </div>
                                                         <div class="mb-3">
+                                                            <label><b>Open At</b></label>
+                                                            <input class="form-control" id="open_at" name="open_at" type="time" value="{{ $data->open_at }}" placeholder=""/>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label><b>Email</b></label>
+                                                            <input class="form-control" id="email" name="email" type="email" value="{{ $data->email }}" placeholder=""/>
+                                                        </div>
+                                                        <div class="mb-3">
                                                             <label><b>Owner</b></label>
                                                             <input class="form-control" id="owner" name="owner" type="text" value="{{ $data->owner }}" placeholder=""/>
                                                         </div>
@@ -512,7 +535,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
               </div>
               <!-- /.card-body -->
             </div>

@@ -11,7 +11,9 @@ class GalleryController extends Controller
 {
     public function index(){
         // dd('hai');
-        $galleries = Gallery::get();
+        $id_branch = auth()->user()->id_branch;
+
+        $galleries = Gallery::where('id_branch',$id_branch)->get();
         return view('gallery.index',compact('galleries'));
     }
 
@@ -22,6 +24,7 @@ class GalleryController extends Controller
         ]);
 
         $created_by = auth()->user()->email;
+        $id_branch = auth()->user()->id_branch;
 
         DB::beginTransaction();
 
@@ -32,12 +35,13 @@ class GalleryController extends Controller
                 $path_attach = $request->file('file_image');
                 $url = $path_attach->move('storage/gallery', $path_attach->hashName());
             }
-    
+
             $store = Gallery::create([
                 'attachment' => $url,
+                'id_branch' => $id_branch,
                 'created_by' => $created_by
             ]);
-    
+
 
             DB::commit();
             // all good
@@ -59,6 +63,7 @@ class GalleryController extends Controller
         ]);
 
         $created_by = auth()->user()->email;
+        $id_branch = auth()->user()->id_branch;
 
         DB::beginTransaction();
 
@@ -76,12 +81,13 @@ class GalleryController extends Controller
                 $path_attach = $request->file('file_image');
                 $url = $path_attach->move('storage/gallery', $path_attach->hashName());
             }
-        
+
             $update = Gallery::where('id',$request->id_gallery)->update([
                 'attachment' => $url,
+                'id_branch' => $id_branch,
                 'created_by' => $created_by
             ]);
-    
+
 
             DB::commit();
             // all good
@@ -109,9 +115,9 @@ class GalleryController extends Controller
             if(File::exists($image_path)) {
                 File::delete($image_path);
             }
-        
+
             $delete = Gallery::where('id',$request->id_gallery)->delete();
-    
+
 
             DB::commit();
             // all good

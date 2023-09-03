@@ -11,6 +11,7 @@ use App\Http\Controllers\MstFeatureController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ListBranchController;
+use App\Http\Controllers\CultureController;
 
 
 /*
@@ -73,9 +74,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/facility/delete', [FacilityController::class, 'delete'])->middleware(['checkRole:User']);
 
     //branch
-    Route::get('/branch', [InstitutionController::class, 'indexBranch'])->middleware(['checkRole:Super Admin']);
-    Route::post('/branch/store', [InstitutionController::class, 'storeBranch'])->middleware(['checkRole:Super Admin']);
-    Route::post('/branch/user', [InstitutionController::class, 'userBranch'])->middleware(['checkRole:Super Admin']);
+    // Route::get('/branch', [InstitutionController::class, 'indexBranch'])->middleware(['checkRole:Super Admin']);
+    // Route::post('/branch/store', [InstitutionController::class, 'storeBranch'])->middleware(['checkRole:Super Admin']);
+    // Route::post('/branch/user', [InstitutionController::class, 'userBranch'])->middleware(['checkRole:Super Admin']);
 
     //gallery
     Route::get('/gallery', [GalleryController::class, 'index'])->middleware(['checkRole:User']);
@@ -84,11 +85,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/gallery/delete', [GalleryController::class, 'delete'])->middleware(['checkRole:User']);
 
     //ListBranch Controller
-    Route::get('/list-branch/{id}', [ListBranchController::class, 'index']);
-    Route::post('/list-branch/store', [ListBranchController::class, 'store']);
-    Route::post('/list-branch/update/{id}', [ListBranchController::class, 'update']);
-    Route::delete('/list-branch/delete/{id}', [ListBranchController::class, 'delete']);
+    Route::get('/list-branch/{id}', [ListBranchController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/list-branch/store', [ListBranchController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::post('/list-branch/update/{id}', [ListBranchController::class, 'update'])->middleware(['checkRole:Super Admin']);
+    Route::delete('/list-branch/delete/{id}', [ListBranchController::class, 'delete'])->middleware(['checkRole:Super Admin']);
 
+    //culture
+    Route::get('/culture/{id}', [CultureController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/culture/store', [CultureController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::post('/culture/update', [CultureController::class, 'update'])->middleware(['checkRole:Super Admin']);
+    Route::post('/culture/delete', [CultureController::class, 'delete'])->middleware(['checkRole:Super Admin']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
