@@ -468,6 +468,8 @@ class InstitutionController extends Controller
                 'zip_code' => $request->zip_code,
                 'phone1' => $request->phone1,
                 'phone2' => $request->phone2,
+                'open_at' => $request->open_at,
+                'email' => $request->email,
                 'whatsapp' => $request->whatsapp,
                 'instagram' => $request->instagram,
                 'facebook' => $request->facebook,

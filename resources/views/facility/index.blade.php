@@ -70,6 +70,10 @@
                                             <label><b>Description</b></label>
                                             <textarea class="my-editor form-control" id="my-editor" name="description" cols="30" rows="10""></textarea>
                                         </div>
+                                        <div class="mb-3">
+                                            <label><b>Upload Icon</b></label>
+                                            <input class="form-control" id="file_image" name="file_image" type="file" placeholder=""/>
+                                        </div>
                                     </div>
                                 </div>
                                 </div>
@@ -157,6 +161,9 @@
                                     <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit{{ $data->id }}">
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
+                                    <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit-icon{{ $data->id }}">
+                                        <i class="fas fa-edit"></i> Edit Icon
+                                    </button>
                                     <button type="button" class="btn btn-danger btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
                                         <i class="fas fa-trash"></i> Delete
                                     </button>
@@ -184,6 +191,41 @@
                                                         <div class="mb-3">
                                                             <label><b>Description</b></label>
                                                             <textarea class="my-editor-edit form-control" id="my-editor-edit" name="description" cols="30" rows="10">{{ $data->description }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Update</button>
+                                                </div>
+                                            </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal Edit-->
+                                    <div class="modal fade" id="modal-edit-icon{{ $data->id }}" tabindex="-1" aria-labelledby="modal-add-label" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modal-add-label">Edit Facility Icon</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{ url('/facility/update/icon') }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="mb-3">
+                                                            <input class="form-control" id="id_facility" name="id_facility" type="hidden" value="{{ $data->id }}"/>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label><b>Upload Image</b></label>
+                                                            <input class="form-control" id="file_image" name="file_image" type="file"/>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <img src="{{ asset($data->file_icon) }}" alt="...">
                                                         </div>
                                                     </div>
                                                 </div>

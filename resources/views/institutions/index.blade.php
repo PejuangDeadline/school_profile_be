@@ -321,6 +321,14 @@
                                                       </div>
                                                   </div>
                                                   <div class="mb-3">
+                                                    <label><b>Open At</b></label>
+                                                    <input class="form-control" id="open_at" name="open_at" type="time" placeholder=""/>
+                                                  </div>
+                                                  <div class="mb-3">
+                                                      <label><b>Email</b></label>
+                                                      <input class="form-control" id="email" name="email" type="email" placeholder=""/>
+                                                  </div>
+                                                  <div class="mb-3">
                                                       <label><b>Owner</b></label>
                                                       <input class="form-control" id="owner" name="owner" type="text" placeholder=""/>
                                                   </div>
