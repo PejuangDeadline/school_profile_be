@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/facility', [FacilityController::class, 'index'])->middleware(['checkRole:User']);
     Route::post('/facility/store', [FacilityController::class, 'store'])->middleware(['checkRole:User']);
     Route::post('/facility/update', [FacilityController::class, 'update'])->middleware(['checkRole:User']);
+    Route::post('/facility/update/icon', [FacilityController::class, 'updateIcon'])->middleware(['checkRole:User']);
     Route::post('/facility/delete', [FacilityController::class, 'delete'])->middleware(['checkRole:User']);
 
     //branch

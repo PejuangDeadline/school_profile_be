@@ -7,6 +7,7 @@ use App\Models\Dropdown;
 use App\Models\Facility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class FacilityController extends Controller
 {
@@ -27,7 +28,7 @@ class FacilityController extends Controller
         //dd($request->all());
         $request->validate([
             'facility_name' => 'required',
-            'description' => 'required',
+            'description' => 'required'
         ]);
 
         $created_by = auth()->user()->email;
@@ -37,10 +38,17 @@ class FacilityController extends Controller
 
         try {
 
+            //upload file
+            if ($request->hasFile('file_image')) {
+                $path_attach = $request->file('file_image');
+                $url = $path_attach->move('storage/facility', $path_attach->hashName());
+            }
+
             $query = Facility::create([
                 'id_branch' => $id_branch,
                 'facility_name' => $request->facility_name,
                 'description' => $request->description,
+                'file_icon' => $url,
                 'created_by' => $created_by,
             ]);
 
@@ -92,12 +100,63 @@ class FacilityController extends Controller
         }
     }
 
+    public function updateIcon(Request $request){
+        // dd($request->all());
+        $request->validate([
+            'id_facility' => 'required',
+            'file_image' => 'required|mimes:jpeg,jpg,png|max:2048'
+        ]);
+
+        $created_by = auth()->user()->email;
+        $id_branch = auth()->user()->id_branch;
+        
+        DB::beginTransaction();
+
+        try {
+            //cari gambar lama
+            $image = Facility::where('id',$request->id_facility)->first();
+
+            $image_path = $image->file_icon;  // Value is not URL but directory file path
+            if(File::exists($image_path)) {
+                File::delete($image_path);
+            }
+
+            //upload file
+            if ($request->hasFile('file_image')) {
+                $path_attach = $request->file('file_image');
+                $url = $path_attach->move('storage/facility', $path_attach->hashName());
+            }
+
+            $query = Facility::where('id',$request->id_facility)->update([
+                'file_icon' => $url
+            ]);
+
+            DB::commit();
+            // all good
+
+            return redirect('/facility')->with('status','Success Update Facility Icon');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/facility')->with('failed','Failed Update Facility Icon');
+        }
+    }
+
     public function delete(Request $request){
         //dd($request->all());
         
         DB::beginTransaction();
 
         try {
+            //cari gambar lama
+            $image = Facility::where('id',$request->id_facility)->first();
+
+            $image_path = $image->file_icon;  // Value is not URL but directory file path
+            if(File::exists($image_path)) {
+                File::delete($image_path);
+            }
 
             $query = Facility::where('id',$request->id_facility)->delete();
 
