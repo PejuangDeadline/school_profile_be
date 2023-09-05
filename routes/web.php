@@ -87,7 +87,8 @@ Route::middleware(['auth'])->group(function () {
     //ListBranch Controller
     Route::get('/list-branch/{id}', [ListBranchController::class, 'index'])->middleware(['checkRole:Super Admin']);
     Route::post('/list-branch/store', [ListBranchController::class, 'store'])->middleware(['checkRole:Super Admin']);
-    Route::post('/list-branch/update/{id}', [ListBranchController::class, 'update'])->middleware(['checkRole:Super Admin']);
+    Route::get('/list-branch/branch-edit/{id_branch}', [ListBranchController::class, 'editBranch'])->middleware(['checkRole:Super Admin']);
+    Route::post('/list-branch/update', [ListBranchController::class, 'update'])->middleware(['checkRole:Super Admin']);
     Route::delete('/list-branch/delete/{id}', [ListBranchController::class, 'delete'])->middleware(['checkRole:Super Admin']);
 
     //culture

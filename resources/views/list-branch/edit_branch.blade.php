@@ -9,7 +9,7 @@
                     <div class="col-auto mt-4">
                         <h1 class="page-header-title">
                             <div class="page-header-icon"><i class="fas fa-school"></i></div>
-                            Institution Menu
+                            Branch Menu
                         </h1>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
           <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Edit Profile</h3>
+                    <h3 class="card-title">Edit Branch</h3>
                 </div>
 
                 <!-- /.card-header -->
@@ -72,15 +72,30 @@
                     <!--end validasi form-->
                     <div class="sbp-preview">
                         <div class="sbp-preview-content">
-                            <form action="{{ url('/institution/profile/update') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ url('/list-branch/update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="mb-3">
-                                <input class="form-control" id="id_profile" name="id_profile" type="hidden" placeholder="" value="{{ $id_profile }}" />
+                                <input class="form-control" id="id_branch" name="id_branch" type="hidden" placeholder="" value="{{ $id_branch }}" />
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-group">
+                                    <select name="grade" id="grade" class="form-control">
+                                        <option value="">- Please Select Grade -</option>
+                                        <option class="text-center" value="{{$branch->grade}}" selected>{{$branch->grade}}</option>
+                                        @foreach ($dropdownGrades as $grade)
+                                            <option value="{{ $grade->name_value }}">{{ $grade->name_value }}</option>
+                                            <option class="text-center" value="{{$branch->grade}}" {{ $grade->name_value == $branch->grade ? 'selected' : '' }}>{{ $grade->name_value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <input class="form-control" id="name" name="name" type="text" value="{{ $branch->name }}" placeholder="Input Branch Name"/>
                             </div>
                             <div class="mb-3">
                                 <label><b>Abouts</b></label>
-                                <textarea id="editabout" class="form-control" name="about" rows="10" cols="50">{{ $profile->about }}</textarea>
+                                <textarea id="editabout" class="form-control" name="about" rows="10" cols="50">{{ $branch->about }}</textarea>
                                 <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
                                 <script>
                                       CKEDITOR.replace('editabout', {
@@ -90,11 +105,11 @@
                             </div>
                             <div class="mb-3">
                                 <label><b>Vision</b></label>
-                                <input class="form-control" id="vision" name="vision" type="text" placeholder="" value="{{ $profile->vision }}"/>
+                                <input class="form-control" id="vision" name="vision" type="text" placeholder="" value="{{ $branch->vision }}"/>
                             </div>
                             <div class="mb-3">
                                 <label><b>Mission</b></label>
-                                <textarea id="editmission" class="form-control" name="mission" rows="10" cols="50">{{ $profile->mission }}</textarea>
+                                <textarea id="editmission" class="form-control" name="mission" rows="10" cols="50">{{ $branch->mission }}</textarea>
                                 <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
                                 <script>
                                       CKEDITOR.replace('editmission', {
@@ -105,15 +120,15 @@
                             <div class="row mb-3">
                                 <label><b>Coordinate</b></label>
                                 <div class="col-md-6">
-                                    <input class="form-control" id="lat" name="lat" type="text" value="{{ $profile->lat }}" autocomplete="off" placeholder="latitude">
+                                    <input class="form-control" id="lat" name="lat" type="text" value="{{ $branch->lat }}" autocomplete="off" placeholder="latitude">
                                 </div>
                                 <div class="col-md-6">
-                                    <input class="form-control" id="long" name="long" type="text" value="{{ $profile->long }}" autocomplete="off" placeholder="longitude">
+                                    <input class="form-control" id="long" name="long" type="text" value="{{ $branch->long }}" autocomplete="off" placeholder="longitude">
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label><b>Address</b></label>
-                                <textarea class="form-control" id="addr" name="addr" cols="30" rows="3" placeholder="">{{ old('addr', $profile->addr) }}</textarea>
+                                <textarea class="form-control" id="addr" name="addr" cols="30" rows="3" placeholder="">{{ old('addr', $branch->addr) }}</textarea>
                             </div>
                             <div class="row mb-3" align="left">
                                 <div class="col-md-3">
@@ -122,9 +137,9 @@
                                 </div>
                                 <div class="col-md-3">
                                     <select class="form-control" name="province_by_id" id="province_by_id">
-                                        <option class="text-center" value="{{ $profile->province }}" selected>{{ $profile->province }}</option>
+                                        <option class="text-center" value="{{ $branch->province }}" selected>{{ $branch->province }}</option>
                                         @foreach ($provinces as $province)
-                                        <option class="text-center" value="{{ $province['id'] }}" {{ $province['nama'] == $profile->province ? 'selected' : '' }}>{{ $province['nama'] }}</option>
+                                        <option class="text-center" value="{{ $province['id'] }}" {{ $province['nama'] == $branch->province ? 'selected' : '' }}>{{ $province['nama'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -135,7 +150,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <select name="city" id="city" class="form-control" required>
-                                        <option class="text-center" value="{{ $profile->city }}" {{ $profile->city ? 'selected' : '' }}>{{ $profile->city }}</option>
+                                        <option class="text-center" value="{{ $branch->city }}" {{ $branch->city ? 'selected' : '' }}>{{ $branch->city }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -147,7 +162,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <select id="district" name="district" class="form-control">
-                                        <option class="text-center" value="{{ $profile->district }}" {{ $profile->district ? 'selected' : '' }}>{{ $profile->district }}</option>
+                                        <option class="text-center" value="{{ $branch->district }}" {{ $branch->district ? 'selected' : '' }}>{{ $branch->district }}</option>
                                     </select>
                                 </div>
                                 @csrf
@@ -157,7 +172,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <select id="subdistrict" name="subdistrict" class="form-control">
-                                        <option class="text-center" value="{{ $profile->sub_district }}" {{ $profile->sub_district ? 'selected' : '' }}>{{ $profile->sub_district }}</option>
+                                        <option class="text-center" value="{{ $branch->sub_district }}" {{ $branch->sub_district ? 'selected' : '' }}>{{ $branch->sub_district }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -168,7 +183,7 @@
                                     <small class="text-muted" style="font-style: italic;">Postal Code</small>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="zip_code" name="zip_code" class="form-control text-center" value="{{ $profile->zip_code }}" autocomplete="off">
+                                    <input type="text" id="zip_code" name="zip_code" class="form-control text-center" value="{{ $branch->zip_code }}" autocomplete="off">
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -176,13 +191,13 @@
                                     <span><b>Phone 1</b></span>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="phone1" name="phone1" class="form-control" value="{{ $profile->phone1 }}" autocomplete="off">
+                                    <input type="text" id="phone1" name="phone1" class="form-control" value="{{ $branch->phone1 }}" autocomplete="off">
                                 </div>
                                 <div class="col-md-3">
                                     <span><b>Phone 2</b></span>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="phone2" name="phone2" class="form-control" value="{{ $profile->phone2 }}" autocomplete="off">
+                                    <input type="text" id="phone2" name="phone2" class="form-control" value="{{ $branch->phone2 }}" autocomplete="off">
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -190,13 +205,13 @@
                                     <span><b>Whatsapp</b></span>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="whatsapp" name="whatsapp" class="form-control" value="{{ $profile->whatsapp }}" autocomplete="off">
+                                    <input type="text" id="whatsapp" name="whatsapp" class="form-control" value="{{ $branch->whatsapp }}" autocomplete="off">
                                 </div>
                                 <div class="col-md-3">
                                     <span><b>Instagram</b></span>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="instagram" name="instagram" class="form-control" value="{{ $profile->instagram }}" autocomplete="off">
+                                    <input type="text" id="instagram" name="instagram" class="form-control" value="{{ $branch->instagram }}" autocomplete="off">
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -204,13 +219,13 @@
                                     <span><b>Facebook</b></span>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="facebook" name="facebook" class="form-control" value="{{ $profile->facebook }}" autocomplete="off">
+                                    <input type="text" id="facebook" name="facebook" class="form-control" value="{{ $branch->facebook }}" autocomplete="off">
                                 </div>
                                 <div class="col-md-3">
                                     <span><b>Twitter</b></span>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="twitter" name="twitter" class="form-control" value="{{ $profile->twitter }}" autocomplete="off">
+                                    <input type="text" id="twitter" name="twitter" class="form-control" value="{{ $branch->twitter }}" autocomplete="off">
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -218,25 +233,33 @@
                                     <span><b>PIC</b></span>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="pic" name="pic" class="form-control" value="{{ $profile->pic }}" autocomplete="off">
+                                    <input type="text" id="pic" name="pic" class="form-control" value="{{ $branch->pic }}" autocomplete="off">
                                 </div>
                                 <div class="col-md-3">
                                     <span><b>PIC Phone</b></span>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="pic_no" name="pic_no" class="form-control" value="{{ $profile->pic_no }}" autocomplete="off">
+                                    <input type="text" id="pic_no" name="pic_no" class="form-control" value="{{ $branch->pic_no }}" autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3">
+                                <label><b>Open At</b></label>
+                                <input class="form-control" id="open_at" name="open_at" type="time" value="{{ $branch->open_at }}" placeholder=""/>
+                            </div>
+                            <div class="mb-3">
+                                <label><b>Email</b></label>
+                                <input class="form-control" id="email" name="email" type="email" value="{{ $branch->email }}" placeholder=""/>
+                            </div>
+                            <div class="mb-3">
                                 <label><b>Owner</b></label>
-                                <input class="form-control" id="owner" name="owner" type="text" value="{{ $profile->owner }}" placeholder=""/>
+                                <input class="form-control" id="owner" name="owner" type="text" value="{{ $branch->owner }}" placeholder=""/>
                             </div>
                             <div class="mb-3">
                                 <label><b>Established</b></label>
-                                <input class="form-control" id="established" name="established" value="{{ $profile->established }}" type="date" placeholder=""/>
+                                <input class="form-control" id="established" name="established" value="{{ $branch->established }}" type="date" placeholder=""/>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
                             </div>
                             </form>
                         </div>
