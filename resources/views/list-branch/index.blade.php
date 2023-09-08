@@ -78,15 +78,33 @@
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Abouts</b></label>
-                                            <textarea class="my-editor form-control" id="my-editor" name="about" cols="30" rows="10""></textarea>
+                                            <textarea id="editcontent" class="form-control" name="about" rows="10" cols="50"></textarea>
+                                            <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+                                            <script>
+                                                CKEDITOR.replace('editcontent', {
+                                                    language:'en-gb'
+                                                });
+                                            </script>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Vision</b></label>
-                                            <input class="form-control" id="vision" name="vision" type="text" placeholder=""/>
+                                            <textarea id="editcontent" class="form-control" name="vision" rows="10" cols="50"></textarea>
+                                            <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+                                            <script>
+                                                CKEDITOR.replace('editcontent', {
+                                                    language:'en-gb'
+                                                });
+                                            </script>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Mission</b></label>
-                                            <input class="form-control" id="mission" name="mission" type="text" placeholder=""/>
+                                            <textarea id="editcontent" class="form-control" name="mission" rows="10" cols="50"></textarea>
+                                            <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+                                            <script>
+                                                CKEDITOR.replace('editcontent', {
+                                                    language:'en-gb'
+                                                });
+                                            </script>
                                         </div>
                                         <div class="row mb-3">
                                             <label><b>Coordinate</b></label>
@@ -303,7 +321,8 @@
                               </td>
                               <td>
                                   <div class="btn-group mr-2 mb-2" role="group">
-                                    <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#editBranchModal{{ $data->id }}"><i class="fas fa-edit"></i> Edit Branch</button>
+                                    {{-- <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#editBranchModal{{ $data->id }}"><i class="fas fa-edit"></i> Edit Branch</button> --}}
+                                    <a href="{{ url('/list-branch/branch-edit/'.encrypt($data->id)) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit Branch</a>
                                   </div>
                                   <div class="btn-group mr-2 mb-2" role="group">
                                     <button title="Delete Rule" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
@@ -337,7 +356,7 @@
                                         {{-- Modal Delete --}}
 
                                       <!-- Modal -->
-                                      <div class="modal fade" id="editBranchModal{{ $data->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      {{-- <div class="modal fade" id="editBranchModal{{ $data->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                           <div class="modal-dialog modal-xl" role="document">
                                               <div class="modal-content">
                                                   <div class="modal-header">
@@ -368,7 +387,13 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <label><b>Abouts</b></label>
-                                                            <textarea class="my-editor form-control" id="my-editor" name="about" cols="30" rows="10">{{ $data->about }}</textarea>
+                                                            <textarea id="editabout" class="form-control" name="about" rows="10" cols="50">{{ $data->about }}</textarea>
+                                                            <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+                                                            <script>
+                                                                CKEDITOR.replace('editabout', {
+                                                                    language:'en-gb'
+                                                                });
+                                                            </script>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label><b>Vision</b></label>
@@ -376,7 +401,13 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <label><b>Mission</b></label>
-                                                            <input class="form-control" id="mission" name="mission" type="text" placeholder="" value="{{ $data->mission }}"/>
+                                                            <textarea id="editmission" class="form-control" name="mission" rows="10" cols="50">{{ $data->mission }}</textarea>
+                                                            <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+                                                            <script>
+                                                                CKEDITOR.replace('editmission', {
+                                                                    language:'en-gb'
+                                                                });
+                                                            </script>
                                                         </div>
                                                         <div class="row mb-3">
                                                             <label><b>Coordinate</b></label>
@@ -527,7 +558,7 @@
                                                   </form>
                                               </div>
                                           </div>
-                                      </div>
+                                      </div> --}}
                                   </div>
                               </td>
                           </tr>
@@ -703,5 +734,21 @@
                     });
 
             });
+</script>
+<script>
+    var about = document.getElementById("about");
+    var vision = document.getElementById("vision");
+    var mission = document.getElementById("mission");
+
+    CKEDITOR.replace(about{
+        language:'en-gb'
+    });
+    CKEDITOR.replace(vision{
+        language:'en-gb'
+    });
+    CKEDITOR.replace(mission{
+        language:'en-gb'
+    });
+
 </script>
 @endsection

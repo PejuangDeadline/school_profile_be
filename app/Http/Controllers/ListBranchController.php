@@ -80,19 +80,56 @@ class ListBranchController extends Controller
         }
     }
 
-    public function update(Request $request,$id){
+    public function editBranch($id_branch){
+        //dd('masuk');
+        $id_branch = decrypt($id_branch);
+        $dropdownGrades = Dropdown::where('category','Grade')
+        ->get();
+        $branch = Branch::where('id',$id_branch)->first();
+
+        //API Regional
+        $ruleAuthRegional = Rule::where('rule_name', 'API Auth Regional')->first();
+        $url_AuthRegional = $ruleAuthRegional->rule_value;
+
+        $ruleEmailRegional = Rule::where('rule_name', 'Email Auth Regional')->first();
+        $emailRegional = $ruleEmailRegional->rule_value;
+
+        $rulePasswordRegional = Rule::where('rule_name', 'Password Auth Regional')->first();
+        $passwordRegional = $rulePasswordRegional->rule_value;
+
+        $response = Http::post($url_AuthRegional, [
+            'email' => $emailRegional,
+            'password' => $passwordRegional,
+        ]);
+
+        $data = $response['data'];
+        $token = $data['token'];
+
+        //get list province
+        $ruleApiProvince = Rule::where('rule_name', 'API List Province')->first();
+        $url_ApiProvince = $ruleApiProvince->rule_value;
+
+        $getProvince = Http::withToken($token)
+            ->get($url_ApiProvince);
+        $provinces = $getProvince['data'];
+        //End API Regional[[]]
+
+        return view('list-branch.edit_branch',compact('branch','id_branch','provinces','dropdownGrades'));
+    }
+
+    public function update(Request $request){
         //dd($id);
-        // dd($request->all());
+        //dd($request->all());
 
         $request->validate([
-            'id_profile' => 'required',
+            'id_branch' => 'required',
             'about' => 'required',
             'vision' => 'required',
             'mission' => 'required',
         ]);
 
-        $id_profile = $request->id_profile;
-        $branch = Branch::where('id',$id_profile)->first();
+        $id_branch = $request->id_branch;
+        $branch = Branch::where('id',$id_branch)->first();
         //dd($branch);
 
         //get id if update regional
@@ -143,7 +180,7 @@ class ListBranchController extends Controller
                 //Area Subdistrict by ID
                 $subdistrict_name = $this->subdistrictName($token, $subdistrict_id);
 
-                $query =  Branch:: where('id',$request->id_profile)
+                $query =  Branch:: where('id',$request->id_branch)
                     ->update([
                         'grade' => $request->grade,
                         'name' => $request->name,
@@ -175,7 +212,7 @@ class ListBranchController extends Controller
             else
             {
                 //dd('tidak berubah');
-                $query =  Branch:: where('id',$request->id_profile)
+                $query =  Branch:: where('id',$request->id_branch)
                     ->update([
                         'grade' => $request->grade,
                         'name' => $request->name,
