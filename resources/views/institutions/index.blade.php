@@ -143,13 +143,13 @@
                                       <button class="btn btn-sm btn-primary dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
                                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <!-- Button trigger modal -->
-                                            <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#addBranchModal{{ $data->id }}"><i class="fas fa-plus"></i> Add Branch</button>
+                                            {{-- <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#addBranchModal{{ $data->id }}"><i class="fas fa-plus"></i> Add Branch</button> --}}
                                             @if ($data->id_profile > 0)
                                                 <a href="{{ url('/institution/profile-edit/'.encrypt($data->id_profile)) }}" class="dropdown-item"><i class="fas fa-edit"></i> Edit Profile</a>
                                             @else
                                                 <a href="{{ url('/institution/profile/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-edit"></i> Add Profile</a>
                                             @endif
-                                            <a class="dropdown-item" href="{{ url('/list-branch/'.encrypt($data->id)) }}"><i class="fas fa-list"></i> List Branch</a>
+                                            <a class="dropdown-item" href="{{ url('/branch/'.encrypt($data->id)) }}"><i class="fas fa-list"></i> List Branch</a>
                                             <a href="{{ url('vision/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-list"></i> List Vision</a>
                                             <a href="{{ url('advantage/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-list"></i> List Advantage</a>
                                             <a href="{{ url('/culture/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-list"></i> List Culture</a>
