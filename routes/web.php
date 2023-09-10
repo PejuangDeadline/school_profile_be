@@ -91,6 +91,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/branch/edit/{id_branch}', [ListBranchController::class, 'editBranch'])->middleware(['checkRole:Super Admin']);
     Route::post('/branch/update', [ListBranchController::class, 'update'])->middleware(['checkRole:Super Admin']);
     Route::delete('/branch/delete/{id}', [ListBranchController::class, 'delete'])->middleware(['checkRole:Super Admin']);
+    Route::put('/branch/upload-logo/{id}', [ListBranchController::class, 'uploadLogo'])->middleware(['checkRole:Super Admin']);
 
     //culture
     Route::get('/culture/{id}', [CultureController::class, 'index'])->middleware(['checkRole:Super Admin']);

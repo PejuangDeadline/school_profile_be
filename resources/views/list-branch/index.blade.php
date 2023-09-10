@@ -283,15 +283,13 @@
                     <!--end validasi form-->
                 </div>
                 <div class="table-responsive">
-                    <table id="tableInstitution" class="table table-striped table-hover dt-responsive display nowrap">
+                    <table id="tableInstitution" class="table table-striped">
                         <thead>
                         <tr>
                           <th>No</th>
                           <th>Branch Name</th>
                           <th>Address</th>
                           <th>Owner</th>
-                          <th>Established</th>
-                          <th>Status</th>
                           <th>Action</th>
                         </tr>
                         </thead>
@@ -302,62 +300,98 @@
                           @foreach ($branch as $data)
                           <tr>
                               <td>{{ $no++ }}</td>
-                              <td>{{ $data->name }}</td>
                               <td>
-                                <strong>{{ $data->province }},</strong>
-                                <i>{{$data->city}},{{$data->district}},{{$data->sub_district}}</i>
-                                 <p>{{$data->addr}}</p>
-
-                            </td>
-                              <td>{{ $data->owner }}</td>
-                              <td>{{ $data->established }}</td>
-                              <td>
-                                  @if ($data->is_active == '1')
+                                    {{ $data->name }}
+                                    <br>
+                                    <b>Established: </b>{{ $data->established }}
+                                    <br>
+                                    @if ($data->is_active == '1')
                                       <div class="text-success">
                                           <b><i>Active</i></b>
                                       </div>
-                                  @else
-                                      <div class="text-danger">
-                                          <b><i>Inactive</i></b>
-                                      </div>
-                                  @endif
+                                    @else
+                                        <div class="text-danger">
+                                            <b><i>Inactive</i></b>
+                                        </div>
+                                    @endif
                               </td>
+                              <td>
+                                <strong>{{ $data->province }},</strong>
+                                <i>{{$data->city}},{{$data->district}},{{$data->sub_district}}</i>
+                                <p>{{$data->addr}}</p>
+
+                              </td>
+                              <td>{{ $data->owner }}</td>
                               <td>
                                   <div class="btn-group mr-2 mb-2" role="group">
                                     {{-- <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#editBranchModal{{ $data->id }}"><i class="fas fa-edit"></i> Edit Branch</button> --}}
-                                    <a href="{{ url('/branch/edit/'.encrypt($data->id)) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit Branch</a>
+                                    <a href="{{ url('/branch/edit/'.encrypt($data->id)) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
                                   </div>
                                   <div class="btn-group mr-2 mb-2" role="group">
                                     <button title="Delete Rule" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
-                                        <i class="fas fa-trash-alt"></i>Delete Branch
+                                        <i class="fas fa-trash-alt"></i>Delete
+                                      </button>
+                                  </div>
+                                  <div class="btn-group mr-2 mb-2" role="group">
+                                    <button title="Upload Logo" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-upload{{ $data->id }}">
+                                        <i class="fas fa-upload"></i>Upload Logo
                                       </button>
                                   </div>
                               </td>
-                              {{-- Modal Delete --}}
-                              <div class="modal fade" id="modal-delete{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
-                                <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Rule</h4>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <form action="{{ url('/branch/delete/'.$data->id) }}" method="POST">
-                                    @csrf
-                                    @method('delete')
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                        Are you sure you want to delete <label for="rule">{{ $data->name }}</label>?
+                                {{-- Modal Upload --}}
+                                <div class="modal fade" id="modal-upload{{ $data->id }}" tabindex="-1" aria-labelledby="modal-upload{{ $data->id }}-label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h4 class="modal-title" id="modal-upload{{ $data->id }}-label">Upload Logo</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
+                                        <form action="{{ url('/branch/upload-logo/'.$data->id) }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('put')
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <input class="form-control" id="logo" name="logo" type="file"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <img src="{{ asset($data->logo) }}" class="img-fluid" alt="...">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                        </form>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>
-                                    </form>
                                 </div>
+                                {{-- Modal Upload --}}
+
+                                {{-- Modal Delete --}}
+                                <div class="modal fade" id="modal-delete{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Rule</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ url('/branch/delete/'.$data->id) }}" method="POST">
+                                        @csrf
+                                        @method('delete')
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                            Are you sure you want to delete <label for="rule">{{ $data->name }}</label>?
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    </div>
                                 </div>
-                            </div>
-                            {{-- Modal Delete --}}
+                                {{-- Modal Delete --}}
                           </tr>
                           @endforeach
                         </tbody>

@@ -9,7 +9,7 @@ use App\Models\Rule;
 use App\Models\Dropdown;
 use App\Models\Branch;
 use App\Traits\searchAreaTrait;
-
+use Illuminate\Support\Facades\File;
 
 class ListBranchController extends Controller
 {
@@ -353,4 +353,45 @@ class ListBranchController extends Controller
         }
     }
 
+    public function uploadLogo(Request $request,$id){
+        // dd($id);
+        $request->validate([
+            'logo' => 'required|mimes:jpeg,jpg,png|max:2048'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            //cari gambar lama
+            $image = Branch::where('id',$id)->first();
+            $id_institution_encrypt = encrypt($image->id_institution);
+
+            $image_path = $image->logo;  // Value is not URL but directory file path
+            if(File::exists($image_path)) {
+                File::delete($image_path);
+            }
+
+            //upload gambar baru
+            if ($request->hasFile('logo')) {
+                $path_attach = $request->file('logo');
+                $url = $path_attach->move('storage/logo', $path_attach->hashName());
+            }
+
+            $update = Branch::where('id',$id)->update([
+                'logo' => $url
+            ]);
+
+
+            DB::commit();
+            // all good
+
+            return redirect('/branch/'.$id_institution_encrypt)->with('status','Success Upload Logo');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/branch/'.$id_institution_encrypt)->with('status','Failed Upload Logo');
+        }
+    }
 }
