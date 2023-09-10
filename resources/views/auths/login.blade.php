@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Login - SB Admin Pro</title>
+        <title>School Profile - CMS</title>
         <link href="{{asset('assets/css/styles.css')}}" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
         <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
@@ -22,7 +22,7 @@
                                 <!-- Basic login form-->
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header text-center justify-content-center">
-                                        Portugal
+                                        School Profile Content Management System
                                         {{-- <img class="animation__shake" src="{{ asset('assets/img/Logo Option 3 (1).png') }}" alt="MatrixLogo" height="50" width="180"> --}}
                                     </div>
                                     <div class="card-body">
