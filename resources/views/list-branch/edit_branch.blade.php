@@ -72,20 +72,21 @@
                     <!--end validasi form-->
                     <div class="sbp-preview">
                         <div class="sbp-preview-content">
-                            <form action="{{ url('/list-branch/update') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ url('/branch/update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="mb-3">
                                 <input class="form-control" id="id_branch" name="id_branch" type="hidden" placeholder="" value="{{ $id_branch }}" />
+                                <input class="form-control" id="id_institution" name="id_institution" type="hidden" placeholder="" value="{{ $branch->id_institution }}" />
                             </div>
                             <div class="mb-3">
                                 <div class="form-group">
                                     <select name="grade" id="grade" class="form-control">
                                         <option value="">- Please Select Grade -</option>
-                                        <option class="text-center" value="{{$branch->grade}}" selected>{{$branch->grade}}</option>
+                                        {{-- <option value="{{$branch->grade}}" selected>{{$branch->grade}}</option> --}}
                                         @foreach ($dropdownGrades as $grade)
-                                            <option value="{{ $grade->name_value }}">{{ $grade->name_value }}</option>
-                                            <option class="text-center" value="{{$branch->grade}}" {{ $grade->name_value == $branch->grade ? 'selected' : '' }}>{{ $grade->name_value }}</option>
+                                            {{-- <option value="{{ $grade->name_value }}">{{ $grade->name_value }}</option> --}}
+                                            <option value="{{$branch->grade}}" {{ $grade->name_value == $branch->grade ? 'selected' : '' }}>{{ $grade->name_value }}</option>
                                         @endforeach
                                     </select>
                                 </div>

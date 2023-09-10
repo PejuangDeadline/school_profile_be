@@ -62,6 +62,7 @@
                                         @csrf
                                         <div class="mb-3">
                                             <input class="form-control" id="id_inst" name="id_inst" type="hidden" placeholder="" value="{{ $institution->id_institution }}" />
+                                            <input class="form-control" id="id_branch" name="id_branch" type="hidden" placeholder="" value="{{ $id_branch }}" />
                                         </div>
                                         <div class="mb-3">
                                             <div class="form-group">
@@ -78,30 +79,24 @@
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Abouts</b></label>
-                                            <textarea id="editcontent" class="form-control" name="about" rows="10" cols="50"></textarea>
+                                            <textarea id="editabout" class="form-control" name="about" rows="10" cols="50"></textarea>
                                             <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
                                             <script>
-                                                CKEDITOR.replace('editcontent', {
+                                                CKEDITOR.replace('editabout', {
                                                     language:'en-gb'
                                                 });
                                             </script>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Vision</b></label>
-                                            <textarea id="editcontent" class="form-control" name="vision" rows="10" cols="50"></textarea>
-                                            <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
-                                            <script>
-                                                CKEDITOR.replace('editcontent', {
-                                                    language:'en-gb'
-                                                });
-                                            </script>
+                                            <input class="form-control" id="vision" name="vision" type="text" placeholder="" value=""/>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Mission</b></label>
-                                            <textarea id="editcontent" class="form-control" name="mission" rows="10" cols="50"></textarea>
+                                            <textarea id="editmission" class="form-control" name="mission" rows="10" cols="50"></textarea>
                                             <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
                                             <script>
-                                                CKEDITOR.replace('editcontent', {
+                                                CKEDITOR.replace('editmission', {
                                                     language:'en-gb'
                                                 });
                                             </script>
@@ -232,6 +227,14 @@
                                             </div>
                                         </div>
                                         <div class="mb-3">
+                                            <label><b>Open At</b></label>
+                                            <input class="form-control" id="open_at" name="open_at" type="time" placeholder=""/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label><b>Email</b></label>
+                                            <input class="form-control" id="email" name="email" type="email" placeholder=""/>
+                                        </div>
+                                        <div class="mb-3">
                                             <label><b>Owner</b></label>
                                             <input class="form-control" id="owner" name="owner" type="text" placeholder=""/>
                                         </div>
@@ -322,245 +325,39 @@
                               <td>
                                   <div class="btn-group mr-2 mb-2" role="group">
                                     {{-- <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#editBranchModal{{ $data->id }}"><i class="fas fa-edit"></i> Edit Branch</button> --}}
-                                    <a href="{{ url('/list-branch/branch-edit/'.encrypt($data->id)) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit Branch</a>
+                                    <a href="{{ url('/branch/edit/'.encrypt($data->id)) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit Branch</a>
                                   </div>
                                   <div class="btn-group mr-2 mb-2" role="group">
                                     <button title="Delete Rule" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
                                         <i class="fas fa-trash-alt"></i>Delete Branch
                                       </button>
-
-                                       {{-- Modal Delete --}}
-                                        <div class="modal fade" id="modal-delete{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Rule</h4>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <form action="{{ url('/list-branch/delete/'.$data->id) }}" method="POST">
-                                                @csrf
-                                                @method('delete')
-                                                <div class="modal-body">
-                                                    <div class="form-group">
-                                                    Are you sure you want to delete <label for="rule">{{ $data->name }}</label>?
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                                </div>
-                                                </form>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        {{-- Modal Delete --}}
-
-                                      <!-- Modal -->
-                                      {{-- <div class="modal fade" id="editBranchModal{{ $data->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                          <div class="modal-dialog modal-xl" role="document">
-                                              <div class="modal-content">
-                                                  <div class="modal-header">
-                                                      <h5 class="modal-title" id="exampleModalLabel">Edit Branch</h5>
-                                                      <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                  </div>
-                                                  <div class="modal-body">
-                                                      <form action="{{ url('/list-branch/update/'.$data->id) }}" method="POST" enctype="multipart/form-data">
-                                                        @csrf
-
-                                                        <div class="mb-3">
-                                                            <input class="form-control" id="id_profile" name="id_profile" type="hidden" placeholder="" value="{{ $data->id }}" />
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <div class="form-group">
-                                                                <select name="grade" id="grade" class="form-control">
-                                                                    <option value="">- Please Select Grade -</option>
-                                                                    <option class="text-center" value="{{$data->grade}}" selected>{{$data->grade}}</option>
-                                                                    @foreach ($dropdownGrades as $grade)
-                                                                        <option value="{{ $grade->name_value }}">{{ $grade->name_value }}</option>
-                                                                        <option class="text-center" value="{{$data->grade}}" {{ $grade->name_value == $data->grade ? 'selected' : '' }}>{{ $grade->name_value }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <input class="form-control" id="name" name="name" type="text" value="{{ $data->name }}" placeholder="Input Branch Name"/>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label><b>Abouts</b></label>
-                                                            <textarea id="editabout" class="form-control" name="about" rows="10" cols="50">{{ $data->about }}</textarea>
-                                                            <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
-                                                            <script>
-                                                                CKEDITOR.replace('editabout', {
-                                                                    language:'en-gb'
-                                                                });
-                                                            </script>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label><b>Vision</b></label>
-                                                            <input class="form-control" id="vision" name="vision" type="text" placeholder="" value="{{ $data->vision }}"/>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label><b>Mission</b></label>
-                                                            <textarea id="editmission" class="form-control" name="mission" rows="10" cols="50">{{ $data->mission }}</textarea>
-                                                            <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
-                                                            <script>
-                                                                CKEDITOR.replace('editmission', {
-                                                                    language:'en-gb'
-                                                                });
-                                                            </script>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <label><b>Coordinate</b></label>
-                                                            <div class="col-md-6">
-                                                                <input class="form-control" id="lat" name="lat" type="text" value="{{ $data->lat }}" autocomplete="off" placeholder="latitude">
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <input class="form-control" id="long" name="long" type="text" value="{{ $data->long }}" autocomplete="off" placeholder="longitude">
-                                                            </div>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label><b>Address</b></label>
-                                                            <textarea class="form-control" id="addr" name="addr" cols="30" rows="3" placeholder="">{{ old('addr', $data->addr) }}</textarea>
-                                                        </div>
-                                                        <div class="row mb-3" align="left">
-                                                            <div class="col-md-3">
-                                                                <span><b>Provinsi</b></span>  <br/>
-                                                                <small class="text-muted" style="font-style: italic;">Province</small>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <select class="form-control" name="province_by_id" id="province_by_id">
-                                                                    <option class="text-center" value="{{ $data->province }}" selected>{{ $data->province }}</option>
-                                                                    @foreach ($provinces as $province)
-                                                                    <option class="text-center" value="{{ $province['id'] }}" {{ $province['nama'] == $data->province ? 'selected' : '' }}>{{ $province['nama'] }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                            @csrf
-                                                            <div class="col-md-3">
-                                                                <span><b>Kota</b></span>  <br/>
-                                                                <small class="text-muted" style="font-style: italic;">City</small>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <select name="city" id="city" class="form-control" required>
-                                                                    <option class="text-center" value="{{ $data->city }}" {{ $data->city ? 'selected' : '' }}>{{ $data->city }}</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        @csrf
-                                                        <div class="row mb-3" align="left">
-                                                            <div class="col-md-3">
-                                                                <span><b>Kecamatan</b></span>  <br/>
-                                                                <small class="text-muted" style="font-style: italic;">District</small>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <select id="district" name="district" class="form-control">
-                                                                    <option class="text-center" value="{{ $data->district }}" {{ $data->district ? 'selected' : '' }}>{{ $data->district }}</option>
-                                                                </select>
-                                                            </div>
-                                                            @csrf
-                                                            <div class="col-md-3">
-                                                                <span><b>Kelurahan</b></span>  <br/>
-                                                                <small class="text-muted" style="font-style: italic;">Subdistrict</small>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <select id="subdistrict" name="subdistrict" class="form-control">
-                                                                    <option class="text-center" value="{{ $data->sub_district }}" {{ $data->sub_district ? 'selected' : '' }}>{{ $data->sub_district }}</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        @csrf
-                                                        <div class="row mb-3" align="left">
-                                                            <div class="col-md-3">
-                                                                <span><b>Kode Pos</b></span>  <br/>
-                                                                <small class="text-muted" style="font-style: italic;">Postal Code</small>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <input type="text" id="zip_code" name="zip_code" class="form-control text-center" value="{{ $data->zip_code }}" autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-md-3">
-                                                                <span><b>Phone 1</b></span>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <input type="text" id="phone1" name="phone1" class="form-control" value="{{ $data->phone1 }}" autocomplete="off">
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <span><b>Phone 2</b></span>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <input type="text" id="phone2" name="phone2" class="form-control" value="{{ $data->phone2 }}" autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-md-3">
-                                                                <span><b>Whatsapp</b></span>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <input type="text" id="whatsapp" name="whatsapp" class="form-control" value="{{ $data->whatsapp }}" autocomplete="off">
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <span><b>Instagram</b></span>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <input type="text" id="instagram" name="instagram" class="form-control" value="{{ $data->instagram }}" autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-md-3">
-                                                                <span><b>Facebook</b></span>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <input type="text" id="facebook" name="facebook" class="form-control" value="{{ $data->facebook }}" autocomplete="off">
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <span><b>Twitter</b></span>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <input type="text" id="twitter" name="twitter" class="form-control" value="{{ $data->twitter }}" autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-md-3">
-                                                                <span><b>PIC</b></span>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <input type="text" id="pic" name="pic" class="form-control" value="{{ $data->pic }}" autocomplete="off">
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <span><b>PIC Phone</b></span>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <input type="text" id="pic_no" name="pic_no" class="form-control" value="{{ $data->pic_no }}" autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label><b>Open At</b></label>
-                                                            <input class="form-control" id="open_at" name="open_at" type="time" value="{{ $data->open_at }}" placeholder=""/>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label><b>Email</b></label>
-                                                            <input class="form-control" id="email" name="email" type="email" value="{{ $data->email }}" placeholder=""/>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label><b>Owner</b></label>
-                                                            <input class="form-control" id="owner" name="owner" type="text" value="{{ $data->owner }}" placeholder=""/>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label><b>Established</b></label>
-                                                            <input class="form-control" id="established" name="established" value="{{ $data->established }}" type="date" placeholder=""/>
-                                                        </div>
-                                                  </div>
-                                                  <div class="modal-footer">
-                                                      <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
-                                                      <button class="btn btn-primary" type="submit">Save</button>
-                                                  </div>
-                                                  </form>
-                                              </div>
-                                          </div>
-                                      </div> --}}
                                   </div>
                               </td>
+                              {{-- Modal Delete --}}
+                              <div class="modal fade" id="modal-delete{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Rule</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="{{ url('/branch/delete/'.$data->id) }}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                        Are you sure you want to delete <label for="rule">{{ $data->name }}</label>?
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                            {{-- Modal Delete --}}
                           </tr>
                           @endforeach
                         </tbody>

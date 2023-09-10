@@ -22,6 +22,7 @@ class ListBranchController extends Controller
 
         $branch = Branch::where('id_institution',$id_branch)->get();
         $institution = Branch::where('id_institution',$id_branch)->first();
+        //dd($institution);
          //API Regional
          $ruleAuthRegional = Rule::where('rule_name', 'API Auth Regional')->first();
          $url_AuthRegional = $ruleAuthRegional->rule_value;
@@ -50,7 +51,105 @@ class ListBranchController extends Controller
          //End API Regional
 
 
-        return view('list-branch.index',compact('branch','provinces','institution','dropdownGrades'));
+        return view('list-branch.index',compact('branch','provinces','institution','dropdownGrades', 'id_branch'));
+    }
+
+    public function store(Request $request){
+        //dd($request->all());
+        $request->validate([
+            "id_inst" => "required",
+            "grade" => "required",
+            "name_branch" => "required",
+            "province_by_id" => "required"
+        ]);
+
+        //get Token Area
+        $rule = Rule::where('rule_name', 'API Auth Regional')->first();
+        $url_getToken = $rule->rule_value;
+
+        $ruleAuthUsers = Rule::where('rule_name', 'Email Auth Regional')->first();
+        $authUsername = $ruleAuthUsers->rule_value;
+
+        $ruleAuthPass = Rule::where('rule_name', 'Password Auth Regional')->first();
+        $authPassword = $ruleAuthPass->rule_value;
+
+        $response = Http::post($url_getToken, [
+            'email' => $authUsername,
+            'password' => $authPassword,
+        ]);
+
+        $data = $response['data'];
+        $token = $data['token'];
+
+        // create by email
+        $created_by=auth()->user()->email;
+        $id_branch_encrypt = encrypt($request->id_branch);
+
+        DB::beginTransaction();
+        try {
+            //Area name by ID
+            $province_name = $this->provinceName($token, $request->province_by_id);
+            //Area City by ID
+            $city_name = $this->cityName($token, $request->city);
+            //Area District by ID
+            $district_name = $this->districtName($token, $request->district);
+            //Area Subdistrict by ID
+            $subdistrict_name = $this->subdistrictName($token, $request->subdistrict);
+
+            //check grade already
+            $checkGrade = Branch::where('id_institution',$request->id_inst)
+                            ->where('grade',$request->grade)
+                            ->where('province',$province_name)
+                            ->count();
+
+            if($checkGrade > 0){
+                return redirect('/institution')->with('failed','Branch With Grade '.$request->grade.' in Province '.$province_name.' Already Exist' );
+            }
+
+
+            $query = Branch::create([
+                'id_institution' => $request->id_inst,
+                'grade' => $request->grade,
+                'name' => $request->name_branch,
+                'about' => $request->about,
+                'vision' => $request->vision,
+                'mission' => $request->mission,
+                'lat' => $request->lat,
+                'long' => $request->long,
+                'addr' => $request->addr,
+                'province' => $province_name,
+                'city' => $city_name,
+                'district' => $district_name,
+                'sub_district' => $subdistrict_name,
+                'zip_code' => $request->zip_code,
+                'phone1' => $request->phone1,
+                'phone2' => $request->phone2,
+                'open_at' => $request->open_at,
+                'email' => $request->email,
+                'whatsapp' => $request->whatsapp,
+                'instagram' => $request->instagram,
+                'facebook' => $request->facebook,
+                'twitter' => $request->twitter,
+                'pic' => $request->pic,
+                'pic_no' => $request->pic_no,
+                'open_at' => $request->open_at,
+                'email' => $request->email,
+                'owner' => $request->owner,
+                'established' => $request->established,
+                'created_by' => $created_by,
+                'is_active' => '1'
+            ]);
+
+            DB::commit();
+            // all good
+
+            return redirect('/branch/'.$id_branch_encrypt)->with('status','Success Add Branch');
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/branch/'.$id_branch_encrypt)->with('failed','Failed Add Branch');
+        }
     }
 
     public function delete(Request $request,$id){
@@ -58,7 +157,8 @@ class ListBranchController extends Controller
 
         // create by email
         $created_by = auth()->user()->email;
-
+        $branch = Branch::where('id',$id)->first();
+        $id_institution_encrypt = encrypt($branch->id_institution);
         DB::beginTransaction();
         try {
 
@@ -70,13 +170,13 @@ class ListBranchController extends Controller
             DB::commit();
             // all good
 
-            return redirect('/institution')->with('status','Success Delete Branch');
+            return redirect('/branch/'.$id_institution_encrypt)->with('status','Success Delete Branch');
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
             // something went wrong
 
-            return redirect('/institution')->with('failed','Failed Delete Branch');
+            return redirect('/branch/'.$id_institution_encrypt)->with('failed','Failed Delete Branch');
         }
     }
 
@@ -130,6 +230,8 @@ class ListBranchController extends Controller
 
         $id_branch = $request->id_branch;
         $branch = Branch::where('id',$id_branch)->first();
+        $id_institution = $request->id_institution;
+        $id_institution_encrypt = encrypt($id_institution);
         //dd($branch);
 
         //get id if update regional
@@ -241,13 +343,13 @@ class ListBranchController extends Controller
             DB::commit();
             // all good
 
-            return redirect('/institution')->with('status','Success Update Branch');
+            return redirect('/branch/'.$id_institution_encrypt)->with('status','Success Update Branch');
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
             // something went wrong
 
-            return redirect('/institution')->with('failed','Failed Update Branch');
+            return redirect('/branch/'.$id_institution_encrypt)->with('failed','Failed Update Branch');
         }
     }
 
