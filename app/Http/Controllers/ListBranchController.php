@@ -224,8 +224,6 @@ class ListBranchController extends Controller
         $request->validate([
             'id_branch' => 'required',
             'about' => 'required',
-            'vision' => 'required',
-            'mission' => 'required',
         ]);
 
         $id_branch = $request->id_branch;
