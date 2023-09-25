@@ -44,6 +44,11 @@
                     <div class="nav-link-icon"><i class="fas fa-images"></i></div>
                     Gallery
                 </a>
+
+                <a class="nav-link" href="{{url('/public-info')}}">
+                    <div class="nav-link-icon"><i class="fas fa-bullhorn"></i></div>
+                    Public Info
+                </a>
                 @endif
 
             </div>
