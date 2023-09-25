@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ListBranchController;
 use App\Http\Controllers\CultureController;
 use App\Http\Controllers\AdvantageController;
+use App\Http\Controllers\PublicInfoController;
 use App\Http\Controllers\VisionController;
 
 /*
@@ -107,13 +108,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/vision/active', [VisionController::class, 'active'])->middleware(['checkRole:Super Admin']);
     Route::post('/vision/deactive', [VisionController::class, 'deactive'])->middleware(['checkRole:Super Admin']);
 
-     //advantage
-     Route::get('/advantage/{id}', [AdvantageController::class, 'index'])->middleware(['checkRole:Super Admin']);
-     Route::post('/advantage/store', [AdvantageController::class, 'store'])->middleware(['checkRole:Super Admin']);
-     Route::post('/advantage/update', [AdvantageController::class, 'update'])->middleware(['checkRole:Super Admin']);
-     Route::post('/advantage/delete', [AdvantageController::class, 'delete'])->middleware(['checkRole:Super Admin']);
-     Route::post('/advantage/active', [AdvantageController::class, 'active'])->middleware(['checkRole:Super Admin']);
-     Route::post('/advantage/deactive', [AdvantageController::class, 'deactive'])->middleware(['checkRole:Super Admin']);
+    //advantage
+    Route::get('/advantage/{id}', [AdvantageController::class, 'index'])->middleware(['checkRole:Super Admin']);
+    Route::post('/advantage/store', [AdvantageController::class, 'store'])->middleware(['checkRole:Super Admin']);
+    Route::post('/advantage/update', [AdvantageController::class, 'update'])->middleware(['checkRole:Super Admin']);
+    Route::post('/advantage/delete', [AdvantageController::class, 'delete'])->middleware(['checkRole:Super Admin']);
+    Route::post('/advantage/active', [AdvantageController::class, 'active'])->middleware(['checkRole:Super Admin']);
+    Route::post('/advantage/deactive', [AdvantageController::class, 'deactive'])->middleware(['checkRole:Super Admin']);
+
+    //Public Info
+    Route::get('/public-info', [PublicInfoController::class, 'index'])->middleware(['checkRole:User']);
+    Route::post('/public-info/store', [PublicInfoController::class, 'store'])->middleware(['checkRole:User']);
+    Route::post('/public-info/update', [PublicInfoController::class, 'update'])->middleware(['checkRole:User']);
+    Route::post('/public-info/delete', [PublicInfoController::class, 'delete'])->middleware(['checkRole:User']);
 
     //ajaxArea
     Route::get('/ajax/mappingCity/{province_id}', 'App\Http\Controllers\AjaxAreaController@searchCity')->name('mappingCity');
