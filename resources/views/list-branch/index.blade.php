@@ -101,14 +101,9 @@
                                                 });
                                             </script>
                                         </div>
-                                        <div class="row mb-3">
-                                            <label><b>Coordinate</b></label>
-                                            <div class="col-md-6">
-                                                <input class="form-control" id="lat" name="lat" type="text" value="{{ old('lat') }}" autocomplete="off" placeholder="latitude">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <input class="form-control" id="long" name="long" type="text" value="{{ old('long') }}" autocomplete="off" placeholder="longitude">
-                                            </div>
+                                        <div class="mb-3">
+                                            <label><b>Google Maps Link</b></label>
+                                            <input class="form-control" id="gmaps_link" name="gmaps_link" type="text" placeholder="Paste Gmaps Link Here"/>
                                         </div>
                                         <div class="mb-3">
                                             <label><b>Address</b></label>
@@ -290,6 +285,7 @@
                           <th>Branch Name</th>
                           <th>Address</th>
                           <th>Owner</th>
+                          <th>PPDB</th>
                           <th>Action</th>
                         </tr>
                         </thead>
@@ -323,6 +319,13 @@
                               </td>
                               <td>{{ $data->owner }}</td>
                               <td>
+                                @if ($data->ppdb_link != '')
+                                    <div class="mb-3">
+                                        <a href="{{ $data->ppdb_link }}" class="btn btn-info btn-sm" target="_blank">See Link Here</a>
+                                    </div>   
+                                @endif
+                              </td>
+                              <td>
                                   <div class="btn-group mr-2 mb-2" role="group">
                                     {{-- <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#editBranchModal{{ $data->id }}"><i class="fas fa-edit"></i> Edit Branch</button> --}}
                                     <a href="{{ url('/branch/edit/'.encrypt($data->id)) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
@@ -335,6 +338,11 @@
                                   <div class="btn-group mr-2 mb-2" role="group">
                                     <button title="Upload Logo" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-upload{{ $data->id }}">
                                         <i class="fas fa-upload"></i>Upload Logo
+                                      </button>
+                                  </div>
+                                  <div class="btn-group mr-2 mb-2" role="group">
+                                    <button title="Upload PPDB" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-ppdb{{ $data->id }}">
+                                        <i class="fas fa-link"></i>Upload Link PPDB
                                       </button>
                                   </div>
                               </td>
@@ -392,6 +400,34 @@
                                     </div>
                                 </div>
                                 {{-- Modal Delete --}}
+
+                                {{-- Modal PPDB --}}
+                                <div class="modal fade" id="modal-ppdb{{ $data->id }}" tabindex="-1" aria-labelledby="modal-ppdb{{ $data->id }}-label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h4 class="modal-title" id="modal-ppdb{{ $data->id }}-label">Upload Link PPDB</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ url('/branch/ppdb/'.$data->id) }}" method="POST">
+                                        @csrf
+                                        @method('put')
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="mb-3">
+                                                    <input class="form-control" id="ppdb_link" name="ppdb_link" type="text" placeholder="Paste PPDB Link Here"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                                {{-- Modal PPDB --}}
                           </tr>
                           @endforeach
                         </tbody>
