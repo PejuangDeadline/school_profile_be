@@ -118,14 +118,9 @@
                                       });
                                   </script>
                             </div>
-                            <div class="row mb-3">
-                                <label><b>Coordinate</b></label>
-                                <div class="col-md-6">
-                                    <input class="form-control" id="lat" name="lat" type="text" value="{{ $branch->lat }}" autocomplete="off" placeholder="latitude">
-                                </div>
-                                <div class="col-md-6">
-                                    <input class="form-control" id="long" name="long" type="text" value="{{ $branch->long }}" autocomplete="off" placeholder="longitude">
-                                </div>
+                            <div class="mb-3">
+                                <label><b>Google Maps Link</b></label>
+                                <input class="form-control" id="gmaps_link" name="gmaps_link" type="text" placeholder="Paste Gmaps Link Here" value="{{ $branch->gmaps_link }}"/>
                             </div>
                             <div class="mb-3">
                                 <label><b>Address</b></label>

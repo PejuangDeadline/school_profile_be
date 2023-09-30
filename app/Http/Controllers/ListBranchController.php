@@ -114,8 +114,7 @@ class ListBranchController extends Controller
                 'about' => $request->about,
                 'vision' => $request->vision,
                 'mission' => $request->mission,
-                'lat' => $request->lat,
-                'long' => $request->long,
+                'gmaps_link' => $request->gmaps_link,
                 'addr' => $request->addr,
                 'province' => $province_name,
                 'city' => $city_name,
@@ -287,8 +286,7 @@ class ListBranchController extends Controller
                         'about' => $request->about,
                         'vision' => $request->vision,
                         'mission' => $request->mission,
-                        'lat' => $request->lat,
-                        'long' => $request->long,
+                        'gmaps_link' => $request->gmaps_link,
                         'addr' => $request->addr,
                         'province' => $province_name,
                         'city' => $city_name,
@@ -319,8 +317,7 @@ class ListBranchController extends Controller
                         'about' => $request->about,
                         'vision' => $request->vision,
                         'mission' => $request->mission,
-                        'lat' => $request->lat,
-                        'long' => $request->long,
+                        'gmaps_link' => $request->gmaps_link,
                         'addr' => $request->addr,
                         'zip_code' => $request->zip_code,
                         'phone1' => $request->phone1,
@@ -390,6 +387,35 @@ class ListBranchController extends Controller
             // something went wrong
 
             return redirect('/branch/'.$id_institution_encrypt)->with('status','Failed Upload Logo');
+        }
+    }
+
+    public function uploadPPDB(Request $request,$id){
+        // dd($id);
+        $request->validate([
+            'ppdb_link' => 'required'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $id_institution_encrypt = encrypt($id);
+
+            $update = Branch::where('id',$id)->update([
+                'ppdb_link' => $request->ppdb_link
+            ]);
+
+
+            DB::commit();
+            // all good
+
+            return redirect('/branch/'.$id_institution_encrypt)->with('status','Success Upload PPDB Link');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/branch/'.$id_institution_encrypt)->with('status','Failed Upload PPDB Link');
         }
     }
 }
