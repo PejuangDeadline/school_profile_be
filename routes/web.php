@@ -61,12 +61,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/access/{user}',[UserController::class, 'access'])->middleware(['checkRole:Super Admin']);
 
     //Institution
-    Route::get('/institution', [InstitutionController::class, 'index'])->middleware(['checkRole:Super Admin']);
-    Route::post('/institution/store', [InstitutionController::class, 'store'])->middleware(['checkRole:Super Admin']);
-    Route::get('/institution/profile/{id_inst}', [InstitutionController::class, 'createProfile'])->middleware(['checkRole:Super Admin']);
-    Route::get('/institution/profile-edit/{id_profile}', [InstitutionController::class, 'editProfile'])->middleware(['checkRole:Super Admin']);
-    Route::post('/institution/profile/store', [InstitutionController::class, 'storeProfile'])->middleware(['checkRole:Super Admin']);
-    Route::post('/institution/profile/update', [InstitutionController::class, 'updateProfile'])->middleware(['checkRole:Super Admin']);
+    Route::get('/institution', [InstitutionController::class, 'index'])->middleware(['checkRole:Admin']);
+    Route::post('/institution/store', [InstitutionController::class, 'store'])->middleware(['checkRole:Admin']);
+    Route::get('/institution/profile/{id_inst}', [InstitutionController::class, 'createProfile'])->middleware(['checkRole:Admin']);
+    Route::get('/institution/profile-edit/{id_profile}', [InstitutionController::class, 'editProfile'])->middleware(['checkRole:Admin']);
+    Route::post('/institution/profile/store', [InstitutionController::class, 'storeProfile'])->middleware(['checkRole:Admin']);
+    Route::post('/institution/profile/update', [InstitutionController::class, 'updateProfile'])->middleware(['checkRole:Admin']);
 
     //Facility
     Route::get('/facility', [FacilityController::class, 'index'])->middleware(['checkRole:User']);
@@ -87,35 +87,36 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/gallery/delete', [GalleryController::class, 'delete'])->middleware(['checkRole:User']);
 
     //ListBranch Controller
-    Route::get('/branch/{id}', [ListBranchController::class, 'index'])->middleware(['checkRole:Super Admin']);
-    Route::post('/branch/store', [ListBranchController::class, 'store'])->middleware(['checkRole:Super Admin']);
-    Route::get('/branch/edit/{id_branch}', [ListBranchController::class, 'editBranch'])->middleware(['checkRole:Super Admin']);
-    Route::post('/branch/update', [ListBranchController::class, 'update'])->middleware(['checkRole:Super Admin']);
-    Route::delete('/branch/delete/{id}', [ListBranchController::class, 'delete'])->middleware(['checkRole:Super Admin']);
-    Route::put('/branch/upload-logo/{id}', [ListBranchController::class, 'uploadLogo'])->middleware(['checkRole:Super Admin']);
-    Route::put('/branch/ppdb/{id}', [ListBranchController::class, 'uploadPPDB'])->middleware(['checkRole:Super Admin']);
+    Route::get('/branch/{id}', [ListBranchController::class, 'index'])->middleware(['checkRole:Admin']);
+    Route::post('/branch/store', [ListBranchController::class, 'store'])->middleware(['checkRole:Admin']);
+    Route::get('/branch/edit/{id_branch}', [ListBranchController::class, 'editBranch'])->middleware(['checkRole:Admin']);
+    Route::post('/branch/update', [ListBranchController::class, 'update'])->middleware(['checkRole:Admin']);
+    Route::delete('/branch/delete/{id}', [ListBranchController::class, 'delete'])->middleware(['checkRole:Admin']);
+    Route::patch('/branch/activate/{id}', [ListBranchController::class, 'activate'])->middleware(['checkRole:Admin']);
+    Route::put('/branch/upload-logo/{id}', [ListBranchController::class, 'uploadLogo'])->middleware(['checkRole:Admin']);
+    Route::put('/branch/ppdb/{id}', [ListBranchController::class, 'uploadPPDB'])->middleware(['checkRole:Admin']);
 
     //culture
-    Route::get('/culture/{id}', [CultureController::class, 'index'])->middleware(['checkRole:Super Admin']);
-    Route::post('/culture/store', [CultureController::class, 'store'])->middleware(['checkRole:Super Admin']);
-    Route::post('/culture/update', [CultureController::class, 'update'])->middleware(['checkRole:Super Admin']);
-    Route::post('/culture/delete', [CultureController::class, 'delete'])->middleware(['checkRole:Super Admin']);
+    Route::get('/culture/{id}', [CultureController::class, 'index'])->middleware(['checkRole:Admin']);
+    Route::post('/culture/store', [CultureController::class, 'store'])->middleware(['checkRole:Admin']);
+    Route::post('/culture/update', [CultureController::class, 'update'])->middleware(['checkRole:Admin']);
+    Route::post('/culture/delete', [CultureController::class, 'delete'])->middleware(['checkRole:Admin']);
 
     //vision
-    Route::get('/vision/{id}', [VisionController::class, 'index'])->middleware(['checkRole:Super Admin']);
-    Route::post('/vision/store', [VisionController::class, 'store'])->middleware(['checkRole:Super Admin']);
-    Route::post('/vision/update', [VisionController::class, 'update'])->middleware(['checkRole:Super Admin']);
-    Route::post('/vision/delete', [VisionController::class, 'delete'])->middleware(['checkRole:Super Admin']);
-    Route::post('/vision/active', [VisionController::class, 'active'])->middleware(['checkRole:Super Admin']);
-    Route::post('/vision/deactive', [VisionController::class, 'deactive'])->middleware(['checkRole:Super Admin']);
+    Route::get('/vision/{id}', [VisionController::class, 'index'])->middleware(['checkRole:Admin']);
+    Route::post('/vision/store', [VisionController::class, 'store'])->middleware(['checkRole:Admin']);
+    Route::post('/vision/update', [VisionController::class, 'update'])->middleware(['checkRole:Admin']);
+    Route::post('/vision/delete', [VisionController::class, 'delete'])->middleware(['checkRole:Admin']);
+    Route::post('/vision/active', [VisionController::class, 'active'])->middleware(['checkRole:Admin']);
+    Route::post('/vision/deactive', [VisionController::class, 'deactive'])->middleware(['checkRole:Admin']);
 
     //advantage
-    Route::get('/advantage/{id}', [AdvantageController::class, 'index'])->middleware(['checkRole:Super Admin']);
-    Route::post('/advantage/store', [AdvantageController::class, 'store'])->middleware(['checkRole:Super Admin']);
-    Route::post('/advantage/update', [AdvantageController::class, 'update'])->middleware(['checkRole:Super Admin']);
-    Route::post('/advantage/delete', [AdvantageController::class, 'delete'])->middleware(['checkRole:Super Admin']);
-    Route::post('/advantage/active', [AdvantageController::class, 'active'])->middleware(['checkRole:Super Admin']);
-    Route::post('/advantage/deactive', [AdvantageController::class, 'deactive'])->middleware(['checkRole:Super Admin']);
+    Route::get('/advantage/{id}', [AdvantageController::class, 'index'])->middleware(['checkRole:Admin']);
+    Route::post('/advantage/store', [AdvantageController::class, 'store'])->middleware(['checkRole:Admin']);
+    Route::post('/advantage/update', [AdvantageController::class, 'update'])->middleware(['checkRole:Admin']);
+    Route::post('/advantage/delete', [AdvantageController::class, 'delete'])->middleware(['checkRole:Admin']);
+    Route::post('/advantage/active', [AdvantageController::class, 'active'])->middleware(['checkRole:Admin']);
+    Route::post('/advantage/deactive', [AdvantageController::class, 'deactive'])->middleware(['checkRole:Admin']);
 
     //Public Info
     Route::get('/public-info', [PublicInfoController::class, 'index'])->middleware(['checkRole:User']);

@@ -124,6 +124,8 @@ class ListBranchController extends Controller
                 'phone1' => $request->phone1,
                 'phone2' => $request->phone2,
                 'open_at' => $request->open_at,
+                'open_at' => $request->open_at,
+                'closed_at' => $request->closed_at,
                 'email' => $request->email,
                 'whatsapp' => $request->whatsapp,
                 'instagram' => $request->instagram,
@@ -169,13 +171,41 @@ class ListBranchController extends Controller
             DB::commit();
             // all good
 
-            return redirect('/branch/'.$id_institution_encrypt)->with('status','Success Delete Branch');
+            return redirect('/branch/'.$id_institution_encrypt)->with('status','Success Inactive Branch');
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
             // something went wrong
 
-            return redirect('/branch/'.$id_institution_encrypt)->with('failed','Failed Delete Branch');
+            return redirect('/branch/'.$id_institution_encrypt)->with('failed','Failed Inactive Branch');
+        }
+    }
+
+    public function activate($id){
+        // dd($id);
+
+        // create by email
+        $created_by = auth()->user()->email;
+        $branch = Branch::where('id',$id)->first();
+        $id_institution_encrypt = encrypt($branch->id_institution);
+        DB::beginTransaction();
+        try {
+
+            $query =  Branch::where('id',$id)
+                    ->update([
+                        'is_active' => '1',
+                        'created_by' => $created_by,
+                    ]);
+            DB::commit();
+            // all good
+
+            return redirect('/branch/'.$id_institution_encrypt)->with('status','Success Activate Branch');
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/branch/'.$id_institution_encrypt)->with('failed','Failed Activate Branch');
         }
     }
 
@@ -302,6 +332,7 @@ class ListBranchController extends Controller
                         'pic' => $request->pic,
                         'pic_no' => $request->pic_no,
                         'open_at' => $request->open_at,
+                        'closed_at' => $request->closed_at,
                         'email' => $request->email,
                         'owner' => $request->owner,
                         'established' => $request->established
@@ -329,6 +360,7 @@ class ListBranchController extends Controller
                         'pic' => $request->pic,
                         'pic_no' => $request->pic_no,
                         'open_at' => $request->open_at,
+                        'closed_at' => $request->closed_at,
                         'email' => $request->email,
                         'owner' => $request->owner,
                         'established' => $request->established
