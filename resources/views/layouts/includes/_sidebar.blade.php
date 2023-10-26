@@ -11,11 +11,6 @@
                 </a>
 
                 @if(\Auth::user()->role === 'Super Admin')
-                <a class="nav-link" href="{{url('/institution')}}">
-                    <div class="nav-link-icon"><i class="fas fa-school"></i></div>
-                    Institution
-                </a>
-
                 <!-- Sidenav Menu Heading (Core)-->
                 <div class="sidenav-menu-heading">Configuration</div>
                 <!-- Sidenav Accordion (Utilities)-->
@@ -32,6 +27,13 @@
                         <a class="nav-link" href="{{url('/user')}}">User</a>
                     </nav>
                 </div>
+                @endif
+
+                @if(\Auth::user()->role === 'Admin')
+                <a class="nav-link" href="{{url('/institution')}}">
+                    <div class="nav-link-icon"><i class="fas fa-school"></i></div>
+                    Institution
+                </a>
                 @endif
 
                 @if(\Auth::user()->role === 'User')

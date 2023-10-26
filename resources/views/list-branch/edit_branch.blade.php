@@ -243,6 +243,10 @@
                                 <input class="form-control" id="open_at" name="open_at" type="time" value="{{ $branch->open_at }}" placeholder=""/>
                             </div>
                             <div class="mb-3">
+                                <label><b>Closed At</b></label>
+                                <input class="form-control" id="closed_at" name="closed_at" type="time" value="{{ $branch->closed_at }}" placeholder=""/>
+                            </div>
+                            <div class="mb-3">
                                 <label><b>Email</b></label>
                                 <input class="form-control" id="email" name="email" type="email" value="{{ $branch->email }}" placeholder=""/>
                             </div>

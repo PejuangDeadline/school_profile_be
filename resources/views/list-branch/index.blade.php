@@ -226,6 +226,10 @@
                                             <input class="form-control" id="open_at" name="open_at" type="time" placeholder=""/>
                                         </div>
                                         <div class="mb-3">
+                                            <label><b>Closed At</b></label>
+                                            <input class="form-control" id="closed_at" name="closed_at" type="time" placeholder=""/>
+                                        </div>
+                                        <div class="mb-3">
                                             <label><b>Email</b></label>
                                             <input class="form-control" id="email" name="email" type="email" placeholder=""/>
                                         </div>
@@ -331,9 +335,15 @@
                                     <a href="{{ url('/branch/edit/'.encrypt($data->id)) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
                                   </div>
                                   <div class="btn-group mr-2 mb-2" role="group">
-                                    <button title="Delete Rule" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $data->id }}">
-                                        <i class="fas fa-trash-alt"></i>Delete
-                                      </button>
+                                    @if ($data->is_active == '1')
+                                        <button title="Inactive Branch" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-inactive{{ $data->id }}">
+                                            <i class="fas fa-ban"></i></i>Inactive
+                                        </button>
+                                    @else
+                                        <button title="Activate Branch" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-active{{ $data->id }}">
+                                            <i class="far fa-check-circle"></i></i>Active
+                                        </button>
+                                    @endif
                                   </div>
                                   <div class="btn-group mr-2 mb-2" role="group">
                                     <button title="Upload Logo" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-upload{{ $data->id }}">
@@ -375,20 +385,20 @@
                                 </div>
                                 {{-- Modal Upload --}}
 
-                                {{-- Modal Delete --}}
-                                <div class="modal fade" id="modal-delete{{ $data->id }}" tabindex="-1" aria-labelledby="modal-delete{{ $data->id }}-label" aria-hidden="true">
+                                {{-- Modal Active --}}
+                                <div class="modal fade" id="modal-active{{ $data->id }}" tabindex="-1" aria-labelledby="modal-active{{ $data->id }}-label" aria-hidden="true">
                                     <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Delete Rule</h4>
+                                        <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Activate Branch</h4>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <form action="{{ url('/branch/delete/'.$data->id) }}" method="POST">
+                                        <form action="{{ url('/branch/activate/'.$data->id) }}" method="POST">
                                         @csrf
-                                        @method('delete')
+                                        @method('patch')
                                         <div class="modal-body">
                                             <div class="form-group">
-                                            Are you sure you want to delete <label for="rule">{{ $data->name }}</label>?
+                                            Are you sure you want to Activate <label for="rule">{{ $data->name }}</label>?
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -399,7 +409,33 @@
                                     </div>
                                     </div>
                                 </div>
-                                {{-- Modal Delete --}}
+                                {{-- Modal Active --}}
+
+                                {{-- Modal Inactive --}}
+                                <div class="modal fade" id="modal-inactive{{ $data->id }}" tabindex="-1" aria-labelledby="modal-inactive{{ $data->id }}-label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h4 class="modal-title" id="modal-delete{{ $data->id }}-label">Inactive Branch</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ url('/branch/delete/'.$data->id) }}" method="POST">
+                                        @csrf
+                                        @method('delete')
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                            Are you sure you want to Inactive <label for="rule">{{ $data->name }}</label>?
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                                {{-- Modal Inactive --}}
 
                                 {{-- Modal PPDB --}}
                                 <div class="modal fade" id="modal-ppdb{{ $data->id }}" tabindex="-1" aria-labelledby="modal-ppdb{{ $data->id }}-label" aria-hidden="true">
