@@ -353,9 +353,48 @@
                                   <div class="btn-group mr-2 mb-2" role="group">
                                     <button title="Upload PPDB" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-ppdb{{ $data->id }}">
                                         <i class="fas fa-link"></i>Upload Link PPDB
-                                      </button>
+                                    </button>
+                                  </div>
+                                  <div class="btn-group mr-2 mb-2" role="group">
+                                    <button title="Upload PPDB" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addUserModal{{ $data->id }}">
+                                        <i class="fas fa-plus"></i> Add User
+                                    </button>
                                   </div>
                               </td>
+
+                                <!-- Modal Add User-->
+                                <div class="modal fade" id="addUserModal{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Add User</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ url('/branch/user/'.$data->id) }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('put')
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <div class="form-group">
+                                                    <input type="hidden" name="id_branch" id="id_branch" value="{{ $data->id }}">
+                                                    <select name="user" id="user" class="form-control">
+                                                        <option value="">- Please Select User Name -</option>
+                                                        @foreach ($users as $user)
+                                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+
                                 {{-- Modal Upload --}}
                                 <div class="modal fade" id="modal-upload{{ $data->id }}" tabindex="-1" aria-labelledby="modal-upload{{ $data->id }}-label" aria-hidden="true">
                                     <div class="modal-dialog">

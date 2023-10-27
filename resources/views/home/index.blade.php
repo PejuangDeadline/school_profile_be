@@ -3,16 +3,17 @@
 @section('content')
 <main>
     <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
-        <div class="container-xl px-4">
-            <div class="page-header-content pt-4">
-                <div class="row align-items-center justify-content-between">
-                    <div class="col-auto mt-2">
-                        <h1 class="page-header-title">
-                            {{-- <div class="page-header-icon"><i data-feather="file"></i></div> --}}
+        <div class="container-xl">
+            <div class="page-header-content">
+                <div class="row text-center">
+                    <div class="col-12">
+                        <h1 class="text-white">
                             <label id="lblGreetings"></label>
+                            &nbsp; {{ $branch_name }}
                         </h1>
                     </div>
                 </div>
+                
             </div>
         </div>
     </header>
@@ -32,14 +33,14 @@
         var greet;
 
         if (hrs < 12)
-            greet = 'Selamat Pagi';
+            greet = 'Selamat Pagi, ';
         else if (hrs >= 12 && hrs <= 17)
-            greet = 'Selamat Siang';
+            greet = 'Selamat Siang, ';
         else if (hrs >= 17 && hrs <= 24)
-            greet = 'Selamat Malam';
+            greet = 'Selamat Malam, ';
 
         document.getElementById('lblGreetings').innerHTML =
-            '<b>' + greet + '</b> <br>Selamat Datang di Sekolah Islam Kharisma';
+            '<b>' + greet + '</b>';
     </script>
 </main>
 @endsection
