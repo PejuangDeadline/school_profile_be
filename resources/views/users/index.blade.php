@@ -159,10 +159,9 @@
                             <button title="Give Access" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-access{{ $data->id }}">
                                 <i class="fas fa-user-check"></i>
                             </button>                            
-                            @endif 
+                            @endif
                         </td>
                     </tr>
-
                      {{-- Modal Update --}}
                      <div class="modal fade" id="modal-update{{ $data->id }}" tabindex="-1" aria-labelledby="modal-update{{ $data->id }}-label" aria-hidden="true">
                         <div class="modal-dialog">

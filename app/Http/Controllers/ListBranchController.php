@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Rule;
 use App\Models\Dropdown;
 use App\Models\Branch;
+use App\Models\User;
 use App\Traits\searchAreaTrait;
 use Illuminate\Support\Facades\File;
 
@@ -50,8 +51,11 @@ class ListBranchController extends Controller
          $provinces = $getProvince['data'];
          //End API Regional
 
+         $users = User::where('id_branch','0')
+            ->where('role','User')
+            ->get();
 
-        return view('list-branch.index',compact('branch','provinces','institution','dropdownGrades', 'id_branch'));
+        return view('list-branch.index',compact('branch','provinces','institution','dropdownGrades', 'id_branch','users'));
     }
 
     public function store(Request $request){
@@ -448,6 +452,32 @@ class ListBranchController extends Controller
             // something went wrong
 
             return redirect('/branch/'.$id_institution_encrypt)->with('status','Failed Upload PPDB Link');
+        }
+    }
+
+    public function userBranch(Request $request,$id){
+        // dd('hai');
+        $request->validate([
+            'user' => 'required'
+        ]);
+        $id_institution_encrypt = encrypt($id);
+
+        DB::beginTransaction();
+
+        try {
+            $query = User::where('id',$request->user)->update([
+                'id_branch' => $request->id_branch
+            ]);
+
+            DB::commit();
+            // all good
+
+            return redirect('/branch/'.$id_institution_encrypt)->with('status','Success Add User');
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+
+            return redirect('/branch/'.$id_institution_encrypt)->with('status','Failed Add User');
         }
     }
 }

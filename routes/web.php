@@ -78,7 +78,6 @@ Route::middleware(['auth'])->group(function () {
     //branch
     // Route::get('/branch', [InstitutionController::class, 'indexBranch'])->middleware(['checkRole:Super Admin']);
     // Route::post('/branch/store', [InstitutionController::class, 'storeBranch'])->middleware(['checkRole:Super Admin']);
-    // Route::post('/branch/user', [InstitutionController::class, 'userBranch'])->middleware(['checkRole:Super Admin']);
 
     //gallery
     Route::get('/gallery', [GalleryController::class, 'index'])->middleware(['checkRole:User']);
@@ -95,6 +94,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/branch/activate/{id}', [ListBranchController::class, 'activate'])->middleware(['checkRole:Admin']);
     Route::put('/branch/upload-logo/{id}', [ListBranchController::class, 'uploadLogo'])->middleware(['checkRole:Admin']);
     Route::put('/branch/ppdb/{id}', [ListBranchController::class, 'uploadPPDB'])->middleware(['checkRole:Admin']);
+    Route::put('/branch/user/{id}', [ListBranchController::class, 'userBranch'])->middleware(['checkRole:Admin']);
 
     //culture
     Route::get('/culture/{id}', [CultureController::class, 'index'])->middleware(['checkRole:Admin']);
