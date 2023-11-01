@@ -17,7 +17,7 @@ class InstitutionController extends Controller
 {
     use searchAreaTrait;
     public function index(){
-
+        //dd('hai');
         $institutions = Institution::select(
                 'institutions.*',
                 'institution_profiles.id as id_profile'

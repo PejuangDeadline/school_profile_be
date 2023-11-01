@@ -18,12 +18,12 @@ class ListBranchController extends Controller
     use searchAreaTrait;
 
     public function index($id){
-        $id_branch = decrypt($id);
+        $id_inst = decrypt($id);
         $dropdownGrades = Dropdown::where('category','Grade')
         ->get();
 
-        $branch = Branch::where('id_institution',$id_branch)->get();
-        $institution = Institution::where('id',$id_branch)->first();
+        $branch = Branch::where('id_institution',$id_inst)->get();
+        $institution = Institution::where('id',$id_inst)->first();
         //dd($institution);
          //API Regional
          $ruleAuthRegional = Rule::where('rule_name', 'API Auth Regional')->first();
@@ -56,7 +56,7 @@ class ListBranchController extends Controller
             ->where('role','User')
             ->get();
 
-        return view('list-branch.index',compact('branch','provinces','institution','dropdownGrades', 'id_branch','users'));
+        return view('list-branch.index',compact('branch','provinces','institution','dropdownGrades', 'id_inst','users'));
     }
 
     public function store(Request $request){
