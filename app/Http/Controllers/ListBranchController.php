@@ -88,7 +88,7 @@ class ListBranchController extends Controller
 
         // create by email
         $created_by=auth()->user()->email;
-        $id_branch_encrypt = encrypt($request->id_branch);
+        $id_inst_encrypt = encrypt($request->id_inst);
 
         DB::beginTransaction();
         try {
@@ -149,12 +149,12 @@ class ListBranchController extends Controller
             DB::commit();
             // all good
 
-            return redirect('/branch/'.$id_branch_encrypt)->with('status','Success Add Branch');
+            return redirect('/branch/'.$id_inst_encrypt)->with('status','Success Add Branch');
         } catch (\Exception $e) {
             DB::rollback();
             // something went wrong
 
-            return redirect('/branch/'.$id_branch_encrypt)->with('failed','Failed Add Branch');
+            return redirect('/branch/'.$id_inst_encrypt)->with('failed','Failed Add Branch');
         }
     }
 
