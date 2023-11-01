@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Rule;
 use App\Models\Dropdown;
 use App\Models\Branch;
+use App\Models\Institution;
 use App\Models\User;
 use App\Traits\searchAreaTrait;
 use Illuminate\Support\Facades\File;
@@ -22,7 +23,7 @@ class ListBranchController extends Controller
         ->get();
 
         $branch = Branch::where('id_institution',$id_branch)->get();
-        $institution = Branch::where('id_institution',$id_branch)->first();
+        $institution = Institution::where('id',$id_branch)->first();
         //dd($institution);
          //API Regional
          $ruleAuthRegional = Rule::where('rule_name', 'API Auth Regional')->first();
