@@ -61,8 +61,8 @@
                                         <form action="{{ url('/branch/store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="mb-3">
-                                            <input class="form-control" id="id_inst" name="id_inst" type="hidden" placeholder="" value="{{ $institution->id_institution }}" />
-                                            <input class="form-control" id="id_branch" name="id_branch" type="hidden" placeholder="" value="{{ $id_branch }}" />
+                                            <input class="form-control" id="id_inst" name="id_inst" type="hidden" placeholder="" value="{{ $institution->id }}" />
+                                            {{-- <input class="form-control" id="id_branch" name="id_branch" type="hidden" placeholder="" value="{{ $id_branch }}" /> --}}
                                         </div>
                                         <div class="mb-3">
                                             <div class="form-group">
