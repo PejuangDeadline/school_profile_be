@@ -102,14 +102,14 @@ class ListBranchController extends Controller
             $subdistrict_name = $this->subdistrictName($token, $request->subdistrict);
 
             //check grade already
-            $checkGrade = Branch::where('id_institution',$request->id_inst)
-                            ->where('grade',$request->grade)
-                            ->where('province',$province_name)
-                            ->count();
+            // $checkGrade = Branch::where('id_institution',$request->id_inst)
+            //                 ->where('grade',$request->grade)
+            //                 ->where('province',$province_name)
+            //                 ->count();
 
-            if($checkGrade > 0){
-                return redirect('/institution')->with('failed','Branch With Grade '.$request->grade.' in Province '.$province_name.' Already Exist' );
-            }
+            // if($checkGrade > 0){
+            //     return redirect('/institution')->with('failed','Branch With Grade '.$request->grade.' in Province '.$province_name.' Already Exist' );
+            // }
 
 
             $query = Branch::create([
