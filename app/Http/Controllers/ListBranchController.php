@@ -18,6 +18,7 @@ class ListBranchController extends Controller
     use searchAreaTrait;
 
     public function index($id){
+        //dd('hai');
         $id_inst = decrypt($id);
         $dropdownGrades = Dropdown::where('category','Grade')
         ->get();
@@ -457,7 +458,7 @@ class ListBranchController extends Controller
     }
 
     public function userBranch(Request $request,$id){
-        // dd('hai');
+        //dd('hai');
         $request->validate([
             'user' => 'required'
         ]);
@@ -473,12 +474,12 @@ class ListBranchController extends Controller
             DB::commit();
             // all good
 
-            return redirect('/branch/'.$id_institution_encrypt)->with('status','Success Add User');
+            return redirect('/institution')->with('status','Success Add User');
         } catch (\Exception $e) {
             DB::rollback();
             // something went wrong
 
-            return redirect('/branch/'.$id_institution_encrypt)->with('status','Failed Add User');
+            return redirect('/institution')->with('status','Failed Add User');
         }
     }
 }
