@@ -109,239 +109,267 @@
                       @endif
                     <!--end validasi form-->
                 </div>
-                <table id="tableInstitution" class="table table-striped table-hover">
-                  <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Institution Name</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    @php
-                      $no=1;
-                    @endphp
-                    @foreach ($institutions as $data)
+                <table id="tableInstitution" class="table table-bordered table-striped">
+                    <thead>
                     <tr>
-                        <td>{{ $no }}</td>
-                        <td>{{ $data->name }}</td>
-                        <td>
-                            @if ($data->is_active == '1')
-                                <div class="text-success">
-                                    <b><i>Active</i></b>
-                                </div>
-                            @else
-                                <div class="text-danger">
-                                    <b><i>Inactive</i></b>
-                                </div>
-                            @endif
-                        </td>
-                        <td>
-                            <div class="btn-group mr-2" role="group">
-                                @if ($data->id_profile > 0)
-                                    <a href="{{ url('/institution/profile-edit/'.encrypt($data->id_profile)) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit Profile</a>
-                                @else
-                                    <a href="{{ url('/institution/profile/'.encrypt($data->id)) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Add Profile</a>
-                                @endif
-                            </div>
-                            <div class="btn-group mr-2" role="group">
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-primary dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-code-branch"></i>Branches</button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <!-- Button trigger modal -->
-                                        <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#addBranchModal{{ $data->id }}"><i class="fas fa-plus"></i> Add Branch</button>
-                                        <a class="dropdown-item" href="#!"><i class="fas fa-list"></i> List Branch</a>
-                                    </div>
-                                </div>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="addBranchModal{{ $data->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Add Branch</h5>
-                                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="{{ url('/branch/store') }}" method="POST" enctype="multipart/form-data">
-                                                @csrf
-                                                <div class="mb-3">
-                                                    <input class="form-control" id="id_inst" name="id_inst" type="hidden" placeholder="" value="{{ $data->id }}" />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <div class="form-group">
-                                                        <select name="grade" id="grade" class="form-control">
-                                                            <option value="">- Please Select Grade -</option>
-                                                            @foreach ($dropdownGrades as $grade)
-                                                                <option value="{{ $grade->name_value }}">{{ $grade->name_value }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <input class="form-control" id="name_branch" name="name_branch" type="text" placeholder="Input Branch Name"/>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label><b>Abouts</b></label>
-                                                    <textarea class="my-editor form-control" id="my-editor" name="about" cols="30" rows="10""></textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label><b>Vision</b></label>
-                                                    <input class="form-control" id="vision" name="vision" type="text" placeholder=""/>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label><b>Mission</b></label>
-                                                    <input class="form-control" id="mission" name="mission" type="text" placeholder=""/>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <label><b>Coordinate</b></label>
-                                                    <div class="col-md-6">
-                                                        <input class="form-control" id="lat" name="lat" type="text" value="{{ old('lat') }}" autocomplete="off" placeholder="latitude">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <input class="form-control" id="long" name="long" type="text" value="{{ old('long') }}" autocomplete="off" placeholder="longitude">
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label><b>Address</b></label>
-                                                    <textarea class="form-control" id="addr" name="addr" cols="30" rows="3" placeholder=""></textarea>
-                                                </div>
-                                                <div class="row mb-3" align="left">
-                                                    <div class="col-md-3">
-                                                        <span><b>Provinsi</b></span>  <br/>
-                                                        <small class="text-muted" style="font-style: italic;">Province</small>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <select class="form-control" name="province_by_id" id="province_by_id">
-                                                            <option class="text-center" value="" selected>- Select Province -</option>
-                                                            @foreach ($provinces as $province)
-                                                            <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    @csrf
-                                                    <div class="col-md-3">
-                                                        <span><b>Kota</b></span>  <br/>
-                                                        <small class="text-muted" style="font-style: italic;">City</small>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <select name="city" id="city" class="form-control" required>
-                                                            <option class="text-center" value="">- Select City -</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                @csrf
-                                                <div class="row mb-3" align="left">
-                                                    <div class="col-md-3">
-                                                        <span><b>Kecamatan</b></span>  <br/>
-                                                        <small class="text-muted" style="font-style: italic;">District</small>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <select id="district" name="district" class="form-control">
-                                                            <option class="text-center" value="">- Select District -</option>
-                                                        </select>
-                                                    </div>
-                                                    @csrf
-                                                    <div class="col-md-3">
-                                                        <span><b>Kelurahan</b></span>  <br/>
-                                                        <small class="text-muted" style="font-style: italic;">Subdistrict</small>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <select id="subdistrict" name="subdistrict" class="form-control">
-                                                            <option class="text-center" value="">- Select Subdistrict -</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                @csrf
-                                                <div class="row mb-3" align="left">
-                                                    <div class="col-md-3">
-                                                        <span><b>Kode Pos</b></span>  <br/>
-                                                        <small class="text-muted" style="font-style: italic;">Postal Code</small>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <input type="text" id="zip_code" name="zip_code" class="form-control text-center" value="" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-3">
-                                                        <span><b>Phone 1</b></span>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <input type="text" id="phone1" name="phone1" class="form-control" value="" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <span><b>Phone 2</b></span>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <input type="text" id="phone2" name="phone2" class="form-control" value="" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-3">
-                                                        <span><b>Whatsapp</b></span>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <input type="text" id="whatsapp" name="whatsapp" class="form-control" value="" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <span><b>Instagram</b></span>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <input type="text" id="instagram" name="instagram" class="form-control" value="" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-3">
-                                                        <span><b>Facebook</b></span>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <input type="text" id="facebook" name="facebook" class="form-control" value="" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <span><b>Twitter</b></span>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <input type="text" id="twitter" name="twitter" class="form-control" value="" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-3">
-                                                        <span><b>PIC</b></span>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <input type="text" id="pic" name="pic" class="form-control" value="" autocomplete="off">
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <span><b>PIC Phone</b></span>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <input type="text" id="pic_no" name="pic_no" class="form-control" value="" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label><b>Owner</b></label>
-                                                    <input class="form-control" id="owner" name="owner" type="text" placeholder=""/>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label><b>Established</b></label>
-                                                    <input class="form-control" id="established" name="established" type="date" placeholder=""/>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
-                                                <button class="btn btn-primary" type="submit">Save</button>
-                                            </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
+                      <th>No</th>
+                      <th>Institution Name</th>
+                      <th>Status</th>
+                      <th></th>
                     </tr>
-                    @endforeach
-                  </tbody>
+                    </thead>
+                    <tbody>
+                      @php
+                        $no=1;
+                      @endphp
+                      @foreach ($institutions as $data)
+                      <tr>
+                          <td>{{ $no++ }}</td>
+                          <td>{{ $data->name }}</td>
+                          <td>
+                              @if ($data->is_active == '1')
+                                  <div class="text-success">
+                                      <b><i>Active</i></b>
+                                  </div>
+                              @else
+                                  <div class="text-danger">
+                                      <b><i>Inactive</i></b>
+                                  </div>
+                              @endif
+                          </td>
+                          <td>
+                              <div class="btn-group mr-2 mb-2" role="group">
+                                  <div class="dropdown">
+                                      <button class="btn btn-sm btn-primary dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <!-- Button trigger modal -->
+                                            {{-- <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#addBranchModal{{ $data->id }}"><i class="fas fa-plus"></i> Add Branch</button> --}}
+                                            @if ($data->id_profile > 0)
+                                                <a href="{{ url('/institution/profile-edit/'.encrypt($data->id_profile)) }}" class="dropdown-item"><i class="fas fa-edit"></i> Edit Profile</a>
+                                            @else
+                                                <a href="{{ url('/institution/profile/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-edit"></i> Add Profile</a>
+                                            @endif
+                                            <a class="dropdown-item" href="{{ url('/branch/'.encrypt($data->id)) }}"><i class="fas fa-list"></i> List Branch</a>
+                                            <a href="{{ url('vision/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-list"></i> List Vision</a>
+                                            <a href="{{ url('advantage/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-list"></i> List Advantage</a>
+                                            <a href="{{ url('/culture/'.encrypt($data->id)) }}" class="dropdown-item"><i class="fas fa-list"></i> List Culture</a>
+                                      </div>
+                                  </div>
+
+                                  <!-- Modal -->
+                                  <div class="modal fade" id="addBranchModal{{ $data->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog modal-xl" role="document">
+                                          <div class="modal-content">
+                                              <div class="modal-header">
+                                                  <h5 class="modal-title" id="exampleModalLabel">Add Branch</h5>
+                                                  <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                              </div>
+                                              <div class="modal-body">
+                                                  <form action="{{ url('/branch/store') }}" method="POST" enctype="multipart/form-data">
+                                                  @csrf
+                                                  <div class="mb-3">
+                                                      <input class="form-control" id="id_inst" name="id_inst" type="hidden" placeholder="" value="{{ $data->id }}" />
+                                                  </div>
+                                                  <div class="mb-3">
+                                                      <div class="form-group">
+                                                          <select name="grade" id="grade" class="form-control">
+                                                              <option value="">- Please Select Grade -</option>
+                                                              @foreach ($dropdownGrades as $grade)
+                                                                  <option value="{{ $grade->name_value }}">{{ $grade->name_value }}</option>
+                                                              @endforeach
+                                                          </select>
+                                                      </div>
+                                                  </div>
+                                                  <div class="mb-3">
+                                                      <input class="form-control" id="name_branch" name="name_branch" type="text" placeholder="Input Branch Name"/>
+                                                  </div>
+                                                  <div class="mb-3">
+                                                      <label><b>Abouts</b></label>
+                                                      <textarea id="editabout" class="form-control" name="about" rows="10" cols="50"></textarea>
+                                                      <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+                                                      <script>
+                                                            CKEDITOR.replace('editabout', {
+                                                                language:'en-gb'
+                                                            });
+                                                        </script>
+                                                  </div>
+                                                  <div class="mb-3">
+                                                      <label><b>Vision</b></label>
+                                                      <textarea id="editvision" class="form-control" name="vision" rows="10" cols="50"></textarea>
+                                                      <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+                                                      <script>
+                                                            CKEDITOR.replace('editvision', {
+                                                                language:'en-gb'
+                                                            });
+                                                        </script>
+                                                  </div>
+                                                  <div class="mb-3">
+                                                      <label><b>Mission</b></label>
+                                                      <textarea id="editmission" class="form-control" name="mission" rows="10" cols="50"></textarea>
+                                                      <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+                                                      <script>
+                                                            CKEDITOR.replace('editmission', {
+                                                                language:'en-gb'
+                                                            });
+                                                        </script>
+                                                  </div>
+                                                  <div class="row mb-3">
+                                                      <label><b>Coordinate</b></label>
+                                                      <div class="col-md-6">
+                                                          <input class="form-control" id="lat" name="lat" type="text" value="{{ old('lat') }}" autocomplete="off" placeholder="latitude">
+                                                      </div>
+                                                      <div class="col-md-6">
+                                                          <input class="form-control" id="long" name="long" type="text" value="{{ old('long') }}" autocomplete="off" placeholder="longitude">
+                                                      </div>
+                                                  </div>
+                                                  <div class="mb-3">
+                                                      <label><b>Address</b></label>
+                                                      <textarea class="form-control" id="addr" name="addr" cols="30" rows="3" placeholder=""></textarea>
+                                                  </div>
+                                                  <div class="row mb-3" align="left">
+                                                      <div class="col-md-3">
+                                                          <span><b>Provinsi</b></span>  <br/>
+                                                          <small class="text-muted" style="font-style: italic;">Province</small>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <select class="form-control" name="province_by_id" id="province_by_id">
+                                                              <option class="text-center" value="" selected>- Select Province -</option>
+                                                              @foreach ($provinces as $province)
+                                                              <option class="text-center" value="{{ $province['id'] }}">{{ $province['nama'] }}</option>
+                                                              @endforeach
+                                                          </select>
+                                                      </div>
+                                                      @csrf
+                                                      <div class="col-md-3">
+                                                          <span><b>Kota</b></span>  <br/>
+                                                          <small class="text-muted" style="font-style: italic;">City</small>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <select name="city" id="city" class="form-control" required>
+                                                              <option class="text-center" value="">- Select City -</option>
+                                                          </select>
+                                                      </div>
+                                                  </div>
+                                                  @csrf
+                                                  <div class="row mb-3" align="left">
+                                                      <div class="col-md-3">
+                                                          <span><b>Kecamatan</b></span>  <br/>
+                                                          <small class="text-muted" style="font-style: italic;">District</small>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <select id="district" name="district" class="form-control">
+                                                              <option class="text-center" value="">- Select District -</option>
+                                                          </select>
+                                                      </div>
+                                                      @csrf
+                                                      <div class="col-md-3">
+                                                          <span><b>Kelurahan</b></span>  <br/>
+                                                          <small class="text-muted" style="font-style: italic;">Subdistrict</small>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <select id="subdistrict" name="subdistrict" class="form-control">
+                                                              <option class="text-center" value="">- Select Subdistrict -</option>
+                                                          </select>
+                                                      </div>
+                                                  </div>
+                                                  @csrf
+                                                  <div class="row mb-3" align="left">
+                                                      <div class="col-md-3">
+                                                          <span><b>Kode Pos</b></span>  <br/>
+                                                          <small class="text-muted" style="font-style: italic;">Postal Code</small>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <input type="text" id="zip_code" name="zip_code" class="form-control text-center" value="" autocomplete="off">
+                                                      </div>
+                                                  </div>
+                                                  <div class="row mb-3">
+                                                      <div class="col-md-3">
+                                                          <span><b>Phone 1</b></span>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <input type="text" id="phone1" name="phone1" class="form-control" value="" autocomplete="off">
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <span><b>Phone 2</b></span>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <input type="text" id="phone2" name="phone2" class="form-control" value="" autocomplete="off">
+                                                      </div>
+                                                  </div>
+                                                  <div class="row mb-3">
+                                                      <div class="col-md-3">
+                                                          <span><b>Whatsapp</b></span>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <input type="text" id="whatsapp" name="whatsapp" class="form-control" value="" autocomplete="off">
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <span><b>Instagram</b></span>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <input type="text" id="instagram" name="instagram" class="form-control" value="" autocomplete="off">
+                                                      </div>
+                                                  </div>
+                                                  <div class="row mb-3">
+                                                      <div class="col-md-3">
+                                                          <span><b>Facebook</b></span>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <input type="text" id="facebook" name="facebook" class="form-control" value="" autocomplete="off">
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <span><b>Twitter</b></span>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <input type="text" id="twitter" name="twitter" class="form-control" value="" autocomplete="off">
+                                                      </div>
+                                                  </div>
+                                                  <div class="row mb-3">
+                                                      <div class="col-md-3">
+                                                          <span><b>PIC</b></span>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <input type="text" id="pic" name="pic" class="form-control" value="" autocomplete="off">
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <span><b>PIC Phone</b></span>
+                                                      </div>
+                                                      <div class="col-md-3">
+                                                          <input type="text" id="pic_no" name="pic_no" class="form-control" value="" autocomplete="off">
+                                                      </div>
+                                                  </div>
+                                                  <div class="mb-3">
+                                                    <label><b>Open At</b></label>
+                                                    <input class="form-control" id="open_at" name="open_at" type="time" placeholder=""/>
+                                                  </div>
+                                                  <div class="mb-3">
+                                                      <label><b>Email</b></label>
+                                                      <input class="form-control" id="email" name="email" type="email" placeholder=""/>
+                                                  </div>
+                                                  <div class="mb-3">
+                                                      <label><b>Owner</b></label>
+                                                      <input class="form-control" id="owner" name="owner" type="text" placeholder=""/>
+                                                  </div>
+                                                  <div class="mb-3">
+                                                      <label><b>Established</b></label>
+                                                      <input class="form-control" id="established" name="established" type="date" placeholder=""/>
+                                                  </div>
+                                              </div>
+                                              <div class="modal-footer">
+                                                  <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                                                  <button class="btn btn-primary" type="submit">Save</button>
+                                              </div>
+                                              </form>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
                 </table>
+
               </div>
               <!-- /.card-body -->
             </div>
@@ -509,5 +537,23 @@
                     });
 
             });
+</script>
+{{-- Script CKeditor --}}
+<script src="{{asset('ckeditor/ckeditor.js')}}"></script>
+<script>
+    var about = document.getElementById("about");
+    var vision = document.getElementById("vision");
+    var mission = document.getElementById("mission");
+
+    CKEDITOR.replace(about{
+        language:'en-gb'
+    });
+    CKEDITOR.replace(vision{
+        language:'en-gb'
+    });
+    CKEDITOR.replace(mission{
+        language:'en-gb'
+    });
+
 </script>
 @endsection

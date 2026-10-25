@@ -80,7 +80,13 @@
                             </div>
                             <div class="mb-3">
                                 <label><b>Abouts</b></label>
-                                <textarea class="my-editor form-control" id="my-editor" name="about" cols="30" rows="10""></textarea>
+                                <textarea id="editabout" class="form-control" name="about" rows="10" cols="50"></textarea>
+                                <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+                                <script>
+                                      CKEDITOR.replace('editabout', {
+                                          language:'en-gb'
+                                      });
+                                  </script>
                             </div>
                             <div class="mb-3">
                                 <label><b>Vision</b></label>
@@ -88,7 +94,13 @@
                             </div>
                             <div class="mb-3">
                                 <label><b>Mission</b></label>
-                                <input class="form-control" id="mission" name="mission" type="text" placeholder=""/>
+                                <textarea id="editmission" class="form-control" name="mission" rows="10" cols="50"></textarea>
+                                <script src="//cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+                                <script>
+                                      CKEDITOR.replace('editmission', {
+                                          language:'en-gb'
+                                      });
+                                  </script>
                             </div>
                             <div class="row mb-3">
                                 <label><b>Coordinate</b></label>
@@ -386,5 +398,21 @@
                     });
 
             });
+</script>
+<script>
+    var about = document.getElementById("about");
+    var vision = document.getElementById("vision");
+    var mission = document.getElementById("mission");
+
+    CKEDITOR.replace(about{
+        language:'en-gb'
+    });
+    CKEDITOR.replace(vision{
+        language:'en-gb'
+    });
+    CKEDITOR.replace(mission{
+        language:'en-gb'
+    });
+
 </script>
 @endsection

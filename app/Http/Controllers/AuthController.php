@@ -28,7 +28,7 @@ class AuthController extends Controller
         //dd($dologin);
         if($dologin){
             // dd('hai');
-            if($cekuser_status->is_active=='1'){
+            if($cekuser_status->is_active=='1' && $cekuser_status->id_branch!='0'){
 
                 //update last login
                 $update_lastlogin=User:: where('email',$email)

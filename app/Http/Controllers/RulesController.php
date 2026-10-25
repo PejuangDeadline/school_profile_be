@@ -69,11 +69,11 @@ class RulesController extends Controller
                 return redirect('/rule')->with('failed','Failed Update Rule');
             }
           } catch (\Throwable $th) {
-           return redirect('/rule')->with('failed','Failed Update Dropdown');
+           return redirect('/rule')->with('failed','Failed Update Feature');
           }
 
       } else{
-       return redirect('/rule')->with('failed','There is no Change in Allowance Data');
+       return redirect('/rule')->with('failed','There is no Change in Rule Data');
       }
          
     }

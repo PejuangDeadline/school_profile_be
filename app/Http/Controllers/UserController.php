@@ -11,7 +11,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        $user = User::get();
+        $user = User::select('users.*','branches.name as branchname','branches.city')
+            ->leftJoin('branches','users.id_branch','branches.id')
+            ->get();
         $dropdown = Dropdown::where('category','Role')
         ->get();
         return view('users.index',compact('user','dropdown'));
@@ -30,8 +32,15 @@ class UserController extends Controller
 
         $password = bcrypt($request->password);
 
+        if($request->role == 'Super Admin' || $request->role == 'Admin'){
+            $id_branch = '999';
+        }
+        else{
+            $id_branch = '0';
+        }
+
         $addUser=User::create([
-            'id_branch' => '0',
+            'id_branch' => $id_branch,
             'id_type' => '0',
             'name' => $request->name,
             'email' => $request->email,
@@ -70,8 +79,16 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        if($request->role == 'Super Admin' || $request->role == 'Admin'){
+            $id_branch = '999';
+        }
+        else{
+            $id_branch = '0';
+        }
+
         $role= User::where('id',$id)
         ->update([
+            'id_branch' => $id_branch,
             'role' => $request->role,
         ]);
             return redirect('/user')->with('status','Success Revoke User');

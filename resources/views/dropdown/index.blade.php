@@ -116,7 +116,8 @@
                       <!--end validasi form-->
                     </div>
                 </div>
-                <table id="tableUser" class="table table-bordered table-striped">
+                <div class="table-responsive"> 
+                <table id="tableDropdown" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>No</th>
@@ -238,6 +239,7 @@
                   </tbody>
                 </table>
               </div>
+              </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
@@ -258,10 +260,11 @@
 <!-- For Datatables -->
 <script>
     $(document).ready(function() {
-      var table = $("#tableUser").DataTable({
+      var table = $("#tableDropdown").DataTable({
         "responsive": true, 
         "lengthChange": false, 
         "autoWidth": false,
+        "searching": false,
         // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       });
     });

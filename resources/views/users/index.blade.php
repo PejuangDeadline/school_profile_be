@@ -118,11 +118,13 @@
                       <!--end validasi form-->
                     </div>
                 </div>
+                <div class="table-responsive"> 
                 <table id="tableUser" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>No</th>
                     <th>Name</th>
+                    <th>Branch</th>
                     <th>Email</th>
                     <th>Role</th>
                     <th>Last Login</th>
@@ -137,6 +139,11 @@
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{ $data->name }}</td>
+                        <td>
+                          @if($data->id_branch != '0')
+                          {{ $data->branchname." - ".$data->city }}
+                          @endif
+                        </td>
                         <td>{{ $data->email }}</td>
                         <td>{{ $data->role }}</td>
                         <td> {{ date('Y-m-d H:i:s', strtotime($data->last_login)) }}</td>
@@ -152,10 +159,9 @@
                             <button title="Give Access" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-access{{ $data->id }}">
                                 <i class="fas fa-user-check"></i>
                             </button>                            
-                            @endif 
+                            @endif
                         </td>
                     </tr>
-
                      {{-- Modal Update --}}
                      <div class="modal fade" id="modal-update{{ $data->id }}" tabindex="-1" aria-labelledby="modal-update{{ $data->id }}-label" aria-hidden="true">
                         <div class="modal-dialog">
@@ -274,6 +280,7 @@
                   </tbody>
                 </table>
               </div>
+              </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
@@ -298,6 +305,7 @@
         "responsive": true, 
         "lengthChange": false, 
         "autoWidth": false,
+        "searching": false,
         // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       });
     });
